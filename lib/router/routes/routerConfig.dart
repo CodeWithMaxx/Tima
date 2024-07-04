@@ -218,8 +218,8 @@ class routerConfigue {
       name: routerConst.generateInquiry,
       builder: (context, state) {
         String indexListNo = state.extra as String;
-        return GenerateInquiryScreen(
-          indexListNo: indexListNo,
+        return Generateinquiry(
+          indexlistno: indexListNo,
         );
       },
     ),

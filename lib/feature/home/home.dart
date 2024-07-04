@@ -313,7 +313,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             ),
             ListTile(
               onTap: () {
-                GoRouter.of(context).pushNamed(routerConst.generateInquiry);
+                GoRouter.of(context)
+                    .pushNamed(routerConst.generateInquiry, extra: '0');
               },
               leading: const Icon(Icons.calendar_today_rounded),
               title: const Text(

@@ -1,8 +1,5 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -10,6 +7,7 @@ import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/models/nextvisitmodel.dart';
+import 'package:tima_app/feature/NavBar/report/models/nextvisitperams.dart';
 import 'package:tima_app/feature/NavBar/report/provider/reportProvder.dart';
 import 'package:tima_app/feature/NavBar/report/screen/reportList.dart';
 
@@ -18,27 +16,20 @@ abstract class ReportScreenBuilder extends State<Reportlist> {
 
   final client = http.Client();
   NextVisitModel nextVisitModel = NextVisitModel();
+  dynamic startDateController;
+  dynamic endDateController;
 
   final ReportProvider controller = ReportProvider();
 
   DateTime selectedDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
-  var nextVisitLoad = false;
-  var enquiryVisitDetailLoad = false;
-  var attendanceDataLoad = false;
-  List enquiryType = [];
-  var startDateController = "";
-  var endDateController = "";
   var nextVisitMessage;
-
   @override
   void initState() {
-    controller.startDateController =
-        DateFormat('yyyy-MM-dd').format(selectedDate);
-    controller.endDateController =
-        DateFormat('yyyy-MM-dd').format(selectedEndDate);
+    // TODO: implement initState
+    startDateController = DateFormat('yyyy-MM-dd').format(selectedDate);
+    endDateController = DateFormat('yyyy-MM-dd').format(selectedEndDate);
     ();
-
     getvisitdataapi();
     getattendanceapi();
     super.initState();
@@ -88,42 +79,13 @@ abstract class ReportScreenBuilder extends State<Reportlist> {
     }
   }
 
-  getnextvisitapi() async {
-    String? userid =
-        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
-    var url = Uri.parse(show_next_visit_app_url);
-    var response = await client.post(url, body: {
-      'user_id': userid.toString(),
-      'from_date': controller.startDateController.toString(),
-      'to_date': controller.endDateController.toString()
-    });
-    try {
-      var decodedResponse = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        if (decodedResponse['status'] == 1) {
-          nextVisitModel = NextVisitModel.fromJson(decodedResponse);
-          log(nextVisitModel.data!.first.client.toString());
-          setState(() {
-            nextVisitMessage = decodedResponse['message'];
-          });
-        } else {
-          {
-            nextVisitModel = NextVisitModel.fromJson(decodedResponse);
-            setState(() {
-              nextVisitMessage = decodedResponse['message'];
-            });
-          }
-        }
-      }
-    } catch (error) {
-      log(error.toString());
-    }
-    // controller.getNextVisitApi(url, body);
+  Future<void> getnextvisitapi() async {
+    controller.fatchNextVisitData(NextVisitParams(
+        startDate: startDateController, endDate: endDateController));
   }
 
   Future<void> getvisitdataapi() async {
-    String? userid =
+    var userid =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
     var body = ({
       'user_id': userid.toString(),
@@ -137,7 +99,7 @@ abstract class ReportScreenBuilder extends State<Reportlist> {
   }
 
   Future<void> getattendanceapi() async {
-    String? userid =
+    var userid =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
     var body = ({
       'user_id': userid.toString(),

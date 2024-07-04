@@ -1,25 +1,117 @@
 // ignore_for_file: must_be_immutable
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:tima_app/ApiService/postApiBaseHelper.dart';
+import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
+import 'package:tima_app/DataBase/keys/keys.dart';
+import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
-import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/controller/generateInquiryController.dart';
-import 'package:tima_app/feature/drawerPage/inquiry/inquiryDetails/screen/inquiryDetail.dart';
 import 'package:tima_app/providers/inquireyProvider/inquiry_provider.dart';
 import 'package:tima_app/router/routeParams/inquiryDetailParams.dart';
 import 'package:tima_app/router/routeParams/nextVisitParams.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
-class GenerateInquiryScreen extends StatefulWidget {
-  final String? indexListNo;
-  const GenerateInquiryScreen({super.key, this.indexListNo});
+class Generateinquiry extends StatefulWidget {
+  var indexlistno;
+  Generateinquiry({super.key, this.indexlistno});
 
   @override
-  State<GenerateInquiryScreen> createState() => _GenerateInquiryScreenState();
+  State<Generateinquiry> createState() => _GenerateinquiryState();
 }
 
-class _GenerateInquiryScreenState extends GenerateInquiryController {
+class _GenerateinquiryState extends State<Generateinquiry> {
+  InquiryProvider inquiryProvider = InquiryProvider();
+  SecureStorageService secureStorageService = SecureStorageService();
+  DateTime selectedDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
+  bool pageloder = true;
+  var branchesid;
+  var branchesname;
+  List branches = [];
+  getbranchescall() async {
+    dynamic companyid =
+        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    var url = getbranchestype_url;
+    var body = ({'company_id': companyid, 'branch_id': '0'});
+
+    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+    if (result.statusCode == 200) {
+      var responsedata = jsonDecode(result.body);
+      branches.clear();
+      setState(() {
+        var data = [
+          {
+            "branch_id": "0",
+            "branch_name": "All",
+            "city_name": "Jodhpur",
+            "state_name": "Rajasthan"
+          },
+        ];
+        branches.addAll(data);
+        branches.addAll(responsedata['data']);
+        print("branches : " + branches.toString());
+        addItemDialogBox();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    inquiryProvider.startgeneratedDateController =
+        DateFormat('yyyy-MM-dd').format(selectedDate);
+    inquiryProvider.endgeneratedDateController =
+        DateFormat('yyyy-MM-dd').format(selectedEndDate);
+    getbranchescall();
+    super.initState();
+  }
+
+  Future<void> _selectStartDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+      initialDatePickerMode: DatePickerMode.day,
+    ) as DateTime;
+
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+        var date = DateFormat.yMd().format(selectedDate);
+        inquiryProvider.startgeneratedDateController =
+            DateFormat('yyyy-MM-dd').format(selectedDate);
+        if (inquiryProvider.endgeneratedDateController.isNotEmpty) {
+          getenquirydataapi();
+        }
+      });
+    }
+  }
+
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+      initialDatePickerMode: DatePickerMode.day,
+    );
+    if (picked != null) {
+      setState(() {
+        selectedEndDate = picked;
+        inquiryProvider.endgeneratedDateController =
+            DateFormat('yyyy-MM-dd').format(selectedEndDate);
+        getenquirydataapi();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,7 +119,7 @@ class _GenerateInquiryScreenState extends GenerateInquiryController {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
           ),
@@ -35,20 +127,20 @@ class _GenerateInquiryScreenState extends GenerateInquiryController {
         leading: Padding(
           padding: const EdgeInsets.only(left: 15, top: 10, bottom: 3),
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
                 Radius.circular(100),
               ),
             ),
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_outlined,
                 color: Colors.black,
               ),
               padding: const EdgeInsets.all(0),
               onPressed: () {
-                GoRouter.of(context).goNamed(routerConst.homeNavBar);
+                GoRouter.of(context).pushNamed(routerConst.homeNavBar);
               },
             ),
           ),
@@ -58,358 +150,433 @@ class _GenerateInquiryScreenState extends GenerateInquiryController {
           'Generated Enquiry list',
           style: TextStyle(
               color: Colors.black,
-              fontSize: 25,
+              fontSize: 20,
               fontFamily: 'Comfortaa',
               fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              getBranchesCallFromApi();
-            },
-            child: Container(
-              // height: 50,
-              width: size.width,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: colorConst.colorWhite,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    "Selected Branch : ",
-                    style: TextStyle(
-                      color: colorConst.colorIconBlue,
-                      fontSize: 12.0,
-                      fontFamily: 'Open Sans',
-                      letterSpacing: 0.9,
-                      fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                getbranchescall();
+              },
+              child: Container(
+                // height: 50,
+                width: size.width,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: colorConst.colorWhite,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text(
+                      "Selected Branch : ",
+                      style: TextStyle(
+                        color: colorConst.colorIconBlue,
+                        fontSize: 12.0,
+                        fontFamily: 'Open Sans',
+                        letterSpacing: 0.9,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    branchesname!,
-                    style: const TextStyle(
-                      color: colorConst.buttonColor,
-                      fontSize: 14.0,
-                      fontFamily: 'Open Sans',
-                      letterSpacing: 0.5,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      "$branchesname",
+                      style: const TextStyle(
+                        color: colorConst.buttonColor,
+                        fontSize: 14.0,
+                        fontFamily: 'Open Sans',
+                        letterSpacing: 0.5,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    selectStartDate(context);
-                  },
-                  child: Container(
-                    height: 85,
-                    width: size.width * 0.3,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: colorConst.colorWhite,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text(
-                          "Start Date",
-                          style: TextStyle(
-                            color: colorConst.colorIconBlue,
-                            fontSize: 14.0,
-                            fontFamily: 'Open Sans',
-                            letterSpacing: 0.5,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          DateFormat('yyyy-MM-dd').format(selectedDate),
-                          style: const TextStyle(
-                            color: colorConst.colorIconBlue,
-                            fontSize: 14.0,
-                            fontFamily: 'Open Sans',
-                            letterSpacing: 0.5,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    selectEndDate(context);
-                  },
-                  child: Container(
-                    height: 85,
-                    width: size.width * 0.3,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: colorConst.colorWhite,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text(
-                          "End Date",
-                          style: TextStyle(
-                            color: colorConst.colorIconBlue,
-                            fontSize: 14.0,
-                            fontFamily: 'Open Sans',
-                            letterSpacing: 0.5,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          DateFormat('yyyy-MM-dd').format(selectedEndDate),
-                          style: const TextStyle(
-                            color: colorConst.colorIconBlue,
-                            fontSize: 14.0,
-                            fontFamily: 'Open Sans',
-                            letterSpacing: 0.5,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 25.h,
             ),
-          ),
-          pageloder
-              ? const CircularProgressIndicator()
-              : Consumer<InquiryProvider>(builder: (_, ref, __) {
-                  if (ref.generateenquiryload) {
-                    return const CircularProgressIndicator();
-                  } else {
-                    return Expanded(
-                      child: ListView.builder(
-                          physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: ref.generatedinquiry.data!.length,
-                          itemBuilder: (context, index) {
-                            // var enquirydetail =
-                            //     ref.generatedinquiry.data![index];
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Stack(
-                                children: [
-                                  Card(
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Generated On : ${ref.generatedinquiry.data?[index].dateTime}",
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+            const Text('Start Date'),
+            SizedBox(
+              height: 10.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                _selectStartDate(context);
+              },
+              child: Container(
+                height: 55,
+                width: size.width,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: tfColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  DateFormat('yyyy-MM-dd').format(selectedDate).toString(),
+                  style: const TextStyle(
+                    color: colorConst.colorIconBlue,
+                    fontSize: 14.0,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            const Text('End Date'),
+            SizedBox(
+              height: 10.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                _selectEndDate(context);
+              },
+              child: Container(
+                height: 55,
+                width: size.width,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: tfColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  DateFormat('yyyy-MM-dd').format(selectedEndDate).toString(),
+                  style: const TextStyle(
+                    color: colorConst.colorIconBlue,
+                    fontSize: 14.0,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            pageloder == true
+                ? CircularProgressIndicator()
+                : Consumer<InquiryProvider>(builder: (_, provider, __) {
+                    if (provider.generateenquiryload) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:
+                                provider.generatedInquiryModel.data!.length,
+                            itemBuilder: (context, index) {
+                              var enquirydetail =
+                                  provider.generatedInquiryModel.data![index];
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Stack(
+                                  children: [
+                                    Card(
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Generated On : ${enquirydetail.dateTime}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Generated By : ${ref.generatedinquiry.data?[index].userName},${ref.generatedinquiry.data?[index].userBranch}",
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Generated By : ${enquirydetail.userName},${enquirydetail.userBranch}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Enquery Type : ${ref.generatedinquiry.data?[index].enqTypeName}",
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Enquery Type : ${enquirydetail.enqTypeName}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Enquiry For : ${ref.generatedinquiry.data?[index].personName},${ref.generatedinquiry.data?[index].branchName}",
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Enquiry For : ${enquirydetail.personName},${enquirydetail.branchName}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Product/Service : ${ref.generatedinquiry.data?[index].productServiceType} (${ref.generatedinquiry.data?[index].productServiceName})",
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Product/Service : ${enquirydetail.productServiceType} (${enquirydetail.productServiceName})",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Client: ${ref.generatedinquiry.data?[index].client} ",
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Client: ${enquirydetail.client} ",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Contact Person : ${ref.generatedinquiry.data?[index].contactPerson} ",
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Contact Person : ${enquirydetail.contactPerson} ",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                "Contact No.: ${ref.generatedinquiry.data?[index].contactNo} ",
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  "Contact No.: ${enquirydetail.contactNo} ",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Flex(
-                                                direction: Axis.horizontal,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  ref
-                                                              .generatedinquiry
-                                                              .data?[index]
-                                                              .opStatus ==
-                                                          "closed"
-                                                      ? GestureDetector(
-                                                          onTap: () {
-                                                            GoRouter.of(context).goNamed(
-                                                                routerConst
-                                                                    .visitDetailScreen,
-                                                                extra: VisitDetailScreenParams(
-                                                                    indexlistno: ref
-                                                                        .generatedinquiry
-                                                                        .data?[
-                                                                            index]
-                                                                        .id,
-                                                                    name: ref
-                                                                        .generatedinquiry
-                                                                        .data?[
-                                                                            index]
-                                                                        .personName));
-                                                          },
-                                                          child: Container(
-                                                            height: 40,
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.4,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            color: colorConst
-                                                                .orangeColour,
-                                                            child: const Text(
-                                                              "View Detail",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  letterSpacing:
-                                                                      0.8),
-                                                            ),
-                                                          ))
-                                                      : Container()
-                                                ]),
-                                          ],
+                                              Flex(
+                                                  direction: Axis.horizontal,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    enquirydetail.opStatus ==
+                                                            "closed"
+                                                        ? GestureDetector(
+                                                            onTap: () {
+                                                              GoRouter.of(context).pushNamed(
+                                                                  routerConst
+                                                                      .visitDetailScreen,
+                                                                  extra: VisitDetailScreenParams(
+                                                                      indexlistno:
+                                                                          enquirydetail
+                                                                              .id,
+                                                                      name: enquirydetail
+                                                                          .personName));
+                                                            },
+                                                            child: Container(
+                                                              height: 40,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.4,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(8.0),
+                                                              color: colorConst
+                                                                  .orangeColour,
+                                                              child: Text(
+                                                                "View Detail",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    letterSpacing:
+                                                                        0.8),
+                                                              ),
+                                                            ))
+                                                        : Container()
+                                                  ]),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                      right: 15,
-                                      top: 10,
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            GoRouter.of(context).goNamed(
-                                                routerConst.inquiryDetailScreen,
-                                                extra: InquiryDeatil(
-                                                    inquiryDetailParams:
-                                                        InquiryDetailParams(
-                                                  type: "generated",
-                                                  typeid: ref.generatedinquiry
-                                                      .data?[index].id,
-                                                  branchid: branchesid,
-                                                  fromdate: ref
-                                                      .startgeneratedDateController,
-                                                  todate: ref
-                                                      .endgeneratedDateController,
-                                                )));
-                                          },
-                                          child:
-                                              const Icon(Icons.remove_red_eye)))
-                                ],
-                              ),
-                            );
-                          }),
-                    );
-                  }
-                })
-        ],
+                                    Positioned(
+                                        right: 15,
+                                        top: 10,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              GoRouter.of(context).pushNamed(
+                                                  routerConst
+                                                      .inquiryDetailScreen,
+                                                  extra: InquiryDetailParams(
+                                                      type: "generated",
+                                                      typeid: enquirydetail.id,
+                                                      branchid: branchesid,
+                                                      fromdate: inquiryProvider
+                                                          .startgeneratedDateController,
+                                                      todate: inquiryProvider
+                                                          .endgeneratedDateController));
+                                            },
+                                            child: const Icon(
+                                                Icons.remove_red_eye)))
+                                  ],
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                  }),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> getenquirydataapi() async {
+    String? userid =
+        await secureStorageService.getUserID(key: StorageKeys.userIDKey) ?? '0';
+    var body = ({
+      'user_id': userid.toString(),
+      'from_date': inquiryProvider.startgeneratedDateController,
+      'to_date': inquiryProvider.endgeneratedDateController,
+      "inq_type": "generated",
+      "inq_id": widget.indexlistno,
+      'branch_id': branchesid
+    });
+    var url = show_enquiry_report_app_url;
+    inquiryProvider.getgenerateEnquiryapi(url, body);
+    pageloder = false;
+    setState(() {});
+  }
+
+  addItemDialogBox() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async {
+              // Disable back button press
+              return Future.value(false);
+            },
+            child: StatefulBuilder(builder: (context, setState) {
+              return Stack(
+                children: [
+                  AlertDialog(
+                    insetPadding: EdgeInsets.only(left: 10, right: 10),
+                    contentPadding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    content: Container(
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: FormField<String>(
+                        builder: (FormFieldState<String> state) {
+                          return InputDecorator(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0))),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                hint: Text("Select Branch"),
+                                value: branchesid,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    branchesid = newValue;
+                                  });
+                                  print(branchesid);
+                                },
+                                items: branches.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value['branch_id'],
+                                    child:
+                                        Text(value['branch_name'].toString()),
+                                    onTap: () {
+                                      setState(() {
+                                        branchesid = value['branch_id'];
+                                        branchesname = value['branch_name'];
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text('OK'),
+                        onPressed: () async {
+                          // Perform some action
+                          if (branchesid == null) {
+                            Fluttertoast.showToast(
+                                msg: "Please Select Branch Name");
+                          } else {
+                            await getenquirydataapi();
+
+                            Navigator.of(context).pop();
+                          }
+                          // Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Back'),
+                        onPressed: () {
+                          GoRouter.of(context)
+                              .pushNamed(routerConst.homeNavBar);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }),
+          );
+        });
   }
 }

@@ -12,7 +12,7 @@ import 'package:tima_app/core/models/generatedinquirymodel.dart';
 class InquiryProvider with ChangeNotifier {
   GetEnquiryDetailModel enquirydetail = GetEnquiryDetailModel();
   var enquiryvisitetail = GetEnquiryViewDetailModel();
-  GeneratedInquiryModel generatedinquiry = GeneratedInquiryModel();
+  GeneratedInquiryModel generatedInquiryModel = GeneratedInquiryModel();
   var inquirydetail = GetEnquiryDetailViewModel();
   bool enquiryvisitdetailload = false;
   bool rejectenquiryload = false;
@@ -37,8 +37,8 @@ class InquiryProvider with ChangeNotifier {
       log("client getenquiry_detail response " + result.body.toString());
       var data = GetEnquiryDetailModel.fromJson(responsedata);
       enquirydetail = data;
-      log("client getenquiry_detail response " +
-          enquirydetail.data!.length.toString());
+      // log("client getenquiry_detail response " +
+      //     enquirydetail.data!.length.toString());
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 
@@ -54,8 +54,8 @@ class InquiryProvider with ChangeNotifier {
 
     if (result.statusCode == 200) {
       var responsedata = jsonDecode(result.body);
-      log("client getenquiry_detail body " + body.toString());
-      log("client getenquiry_detail response " + result.body.toString());
+      log("client getenquiry_detail body: $body");
+      log("client getenquiry_detail response: ${result.body} ");
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 
@@ -107,12 +107,12 @@ class InquiryProvider with ChangeNotifier {
 
     if (result.statusCode == 200) {
       var responsedata = jsonDecode(result.body);
-      log("client getgenerateEnquiryapi body " + body.toString());
-      log("client getgenerateEnquiryapi response " + result.body.toString());
+      log("client getgenerateEnquiryapi body: $body ");
+      log("client getgenerateEnquiryapi response: ${result.body}");
       var data = GeneratedInquiryModel.fromJson(responsedata);
-      generatedinquiry = data;
-      log("client getgenerateEnquiryapi response length " +
-          generatedinquiry.data!.length.toString());
+      generatedInquiryModel = data;
+      // log("client getgenerateEnquiryapi response length " +
+      //     generatedInquiryModel.data!.length.toString());
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 

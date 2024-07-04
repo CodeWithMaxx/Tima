@@ -25,13 +25,17 @@ class GeneratedInquiryModel {
       GeneratedInquiryModel(
         status: json["status"],
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] == null
+            ? null
+            : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data == null
+            ? null
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
@@ -98,7 +102,7 @@ class Datum {
     required this.remark,
     required this.opStatus,
     required this.clientId,
-    required this.vendorId,
+    this.vendorId,
     required this.visitId,
     this.rejectReason,
     required this.status,
@@ -106,7 +110,9 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        dateTime: DateTime.parse(json["date_time"]),
+        dateTime: json["date_time"] == null
+            ? null
+            : DateTime.parse(json["date_time"]),
         userId: json["user_id"],
         userName: json["user_name"],
         userBranch: json["user_branch"],
@@ -141,7 +147,7 @@ class Datum {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "date_time": dateTime!.toIso8601String(),
+        "date_time": dateTime?.toIso8601String(),
         "user_id": userId,
         "user_name": userName,
         "user_branch": userBranch,

@@ -2,14 +2,20 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
+import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
+import 'package:tima_app/DataBase/keys/keys.dart';
+import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/models/attendancemodel.dart';
 import 'package:tima_app/core/models/enquiryviewdetailmodel.dart';
 import 'package:tima_app/core/models/nextvisitmodel.dart';
+import 'package:tima_app/feature/NavBar/report/models/nextvisitperams.dart';
 
 class ReportProvider extends ChangeNotifier {
-  NextVisitModel nextVisit = NextVisitModel();
+  final client = http.Client();
   GetEnquiryViewDetailModel enquiryVisitDetail = GetEnquiryViewDetailModel();
+  final SecureStorageService _secureStorageService = SecureStorageService();
   AttendanceModel attendanceData = AttendanceModel();
   var nextVisitLoad = false;
   var enquiryVisitDetailLoad = false;
@@ -17,26 +23,53 @@ class ReportProvider extends ChangeNotifier {
   List enquiryType = [];
   var startDateController = "";
   var endDateController = "";
+  List<NextVisitModel> nextVisitData = [];
 
-  void getNextVisitApi(String url, dynamic body) async {
+  fatchNextVisitData(NextVisitParams nextVisiParams) async {
     nextVisitLoad = true;
     notifyListeners();
+    String? userid =
+        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    var url = Uri.parse(show_next_visit_app_url);
 
-    var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+    final Response = await client.post(url, body: {
+      'user_id': userid.toString(),
+      'from_date': nextVisiParams.startDate,
+      'to_date': nextVisiParams.endDate
+    });
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-      notifyListeners();
-      log("client NextVisitModel body -->body");
-      log("client NextVisitModel response -->${response.body}");
-      nextVisit = NextVisitModel.fromJson(decodedResponse);
+    log(Response.body);
+
+    var decodedResponse = jsonDecode(Response.body);
+    notifyListeners();
+
+    if (Response.statusCode == 200) {
+      NextVisitModel nextVisitModel = NextVisitModel.fromJson(decodedResponse);
+      nextVisitData.addAll(nextVisitModel as List<NextVisitModel>);
       nextVisitLoad = false;
       notifyListeners();
-      // Fluttertoast.showToast(msg: responseData['message']);
     }
-    nextVisitLoad = false;
-    notifyListeners();
   }
+
+  // void getNextVisitApi(String url, dynamic body) async {
+  //   nextVisitLoad = true;
+  //   notifyListeners();
+
+  //   var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+
+  //   if (response.statusCode == 200) {
+  //     var decodedResponse = jsonDecode(response.body);
+  //     notifyListeners();
+  //     log("client NextVisitModel body -->body");
+  //     log("client NextVisitModel response -->${response.body}");
+  //     NextVisitModel.fromJson(decodedResponse);
+  //     nextVisitLoad = false;
+  //     notifyListeners();
+  //     // Fluttertoast.showToast(msg: responseData['message']);
+  //   }
+  //   nextVisitLoad = false;
+  //   notifyListeners();
+  // }
 
   void getEnquiryDetailApi(String url, dynamic body) async {
     log("client getenquiry_detail body --$url");
