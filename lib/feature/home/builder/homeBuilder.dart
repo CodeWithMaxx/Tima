@@ -1,5 +1,3 @@
-// ignore_for_file: unused_label
-import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -9,41 +7,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:http/http.dart' as http;
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
-import 'package:tima_app/core/constants/textconst.dart';
+import 'package:tima_app/feature/home/screen/home.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> with WidgetsBindingObserver {
-  final SecureStorageService _secureStorageService = SecureStorageService();
+abstract class HomeBuilder extends State<Home> {
+  final SecureStorageService secureStorageService = SecureStorageService();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   final storageHub = const FlutterSecureStorage();
 
   String? userEmail;
   String? userName;
+  String? timaHomeLogo;
+  List<ScreenHiddenDrawer> pages = [];
   int currentSlider = 0;
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    callHomeBannerFromApi();
-    usreInit();
-    super.initState();
-  }
 
   usreInit() async {
     userName = await storageHub.read(key: StorageKeys.NameKey);
     userEmail = await storageHub.read(key: StorageKeys.emailKey);
+    timaHomeLogo = await storageHub.read(key: StorageKeys.timaLogoKey);
     setState(() {});
   }
 
@@ -55,8 +43,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     );
   }
 
-  int _current = 0; // Current index of the carousel
-  final CarouselController _controller = CarouselController();
+  int current = 0; // Current index of the carousel
+  final CarouselController controller = CarouselController();
   String title = '';
 
   String titlemessage = "Tima";
@@ -69,14 +57,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   Future<void> callHomeBannerFromApi() async {
     String? userId =
-        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
-    String? companyId = await _secureStorageService.getUserCompanyID(
+        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    String? companyId = await secureStorageService.getUserCompanyID(
         key: StorageKeys.companyIdKey);
     String username =
-        await _secureStorageService.getUserName(key: StorageKeys.NameKey) ??
+        await secureStorageService.getUserName(key: StorageKeys.NameKey) ??
             'Guest';
     String useremail =
-        await _secureStorageService.getUserEmailID(key: StorageKeys.emailKey) ??
+        await secureStorageService.getUserEmailID(key: StorageKeys.emailKey) ??
             'not EmailID Found';
 
     isImageLoading = true;
@@ -92,11 +80,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         var userLoginSuccessStatusCode = bannerDataDecoded['user_login_status'];
         if (userLoginSuccessStatusCode == 1) {
           setState(() {
-            _secureStorageService.saveUserLoginToken(
+            secureStorageService.saveUserLoginToken(
                 key: 'loggedIn', value: false);
             // GoRouter.of(context).goNamed(routerConst.homePage);
             title = bannerDataDecoded['logo_message'];
-            _secureStorageService.saveTimaLogo(
+            storageHub.write(
+                key: StorageKeys.timaLogoKey,
+                value: bannerDataDecoded['logo_message']);
+            secureStorageService.saveTimaLogo(
                 key: StorageKeys.timaLogoKey, value: bannerDataDecoded['logo']);
 
             log("userLogin_title : $title ");
@@ -119,127 +110,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: Text(
-            "Tima",
-            style: GoogleFonts.poppins(
-                fontSize: 22.w, color: greyColor, fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.notifications_active,
-                  color: greyColor,
-                ))
-          ],
-        ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Container(
-                alignment: Alignment.center,
-                height: 180,
-                width: double.infinity,
-                margin: const EdgeInsets.only(
-                  left: 12,
-                  right: 12,
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: secondryGreyColor.withOpacity(.5)),
-                child: ImageSlider()),
-            SizedBox(
-              height: 60.h,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/timaApplogo.jpg',
-                height: 100,
-                width: 100,
-                fit: BoxFit.cover,
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            txtHelper()
-                .heading1Text(title.toString().toString(), 25, blueColor),
-          ],
-        ),
-        drawer: TimaAppDrawer,
-      ),
-    );
-  }
-
-  ImageSlider() {
-    return Stack(
-      children: [
-        CarouselSlider(
-          items: imageSliders
-              .map(
-                (images) => Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      images,
-                      fit: BoxFit.cover,
-                      width: 1000,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-          carouselController: _controller,
-          options: CarouselOptions(
-            height: 280.0,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            // aspectRatio: 16 / 9,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enableInfiniteScroll: true,
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            viewportFraction: 0.8,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            },
-          ),
-        ),
-        Positioned.fill(
-          top: 150,
-          left: 155,
-          child: Row(
-            children: List.generate(
-                imageSliders.length,
-                (index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      child: AnimatedContainer(
-                          duration: const Duration(microseconds: 300),
-                          // padding: const EdgeInsets.symmetric(horizontal: 3),
-                          width: _current == index ? 16 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: _current == index ? blueColor : Colors.white,
-                          )),
-                    )),
-          ),
-        )
-      ],
-    );
-  }
+  Widget get HiddenDrawerView => HiddenDrawerMenu(
+        backgroundColorMenu: Colors.deepPurpleAccent,
+        screens: pages,
+      );
 
   Widget get TimaAppDrawer => Drawer(
         child: ListView(
@@ -411,4 +285,63 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           ],
         ),
       );
+
+  ImageSlider() {
+    return Stack(
+      children: [
+        CarouselSlider(
+          items: imageSliders
+              .map(
+                (images) => Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      images,
+                      fit: BoxFit.cover,
+                      width: 1000,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+          carouselController: controller,
+          options: CarouselOptions(
+            height: 280.0,
+            enlargeCenterPage: true,
+            autoPlay: true,
+            // aspectRatio: 16 / 9,
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enableInfiniteScroll: true,
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            viewportFraction: 0.8,
+            onPageChanged: (index, reason) {
+              setState(() {
+                current = index;
+              });
+            },
+          ),
+        ),
+        Positioned.fill(
+          top: 150,
+          left: 155,
+          child: Row(
+            children: List.generate(
+                imageSliders.length,
+                (index) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: AnimatedContainer(
+                          duration: const Duration(microseconds: 300),
+                          // padding: const EdgeInsets.symmetric(horizontal: 3),
+                          width: current == index ? 16 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: current == index ? blueColor : Colors.white,
+                          )),
+                    )),
+          ),
+        )
+      ],
+    );
+  }
 }

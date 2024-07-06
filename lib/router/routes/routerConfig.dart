@@ -3,7 +3,7 @@ import 'package:tima_app/Admin/screen/requestAdmin.dart';
 import 'package:tima_app/Error/401.dart';
 import 'package:tima_app/feature/Auth/forgotPassword/screen/forgotPassword.dart';
 import 'package:tima_app/feature/Auth/loginPages/screen/loginPage.dart';
-import 'package:tima_app/feature/Auth/register/register.dart';
+import 'package:tima_app/feature/Auth/register/screen/register.dart';
 import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
 import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/drawerPage/homeLocation/homelocation.dart';
@@ -11,7 +11,7 @@ import 'package:tima_app/feature/drawerPage/inquiry/createInquiry/screen/createI
 import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/screen/generateInquiry.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/inquiryDetails/screen/inquiryDetail.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/reciveInquiry/screen/reciveInquiry.dart';
-import 'package:tima_app/feature/home/home.dart';
+import 'package:tima_app/feature/home/screen/home.dart';
 import 'package:tima_app/feature/splashScreen/splashScreen.dart';
 import 'package:tima_app/feature/visit/visitDetails/visitDetail.dart';
 import 'package:tima_app/router/routeParams/inquiryDetailParams.dart';
@@ -227,10 +227,10 @@ class routerConfigue {
     ),
 
     // GoRoute(
-    //   path: routerConst.nextVisitDemo,
-    //   name: routerConst.nextVisitDemo,
+    //   path: routerConst.hiddenDrawer,
+    //   name: routerConst.hiddenDrawer,
     //   builder: (context, state) {
-    //     return const NextVisitApiTesting();
+    //     return const HiddenDrawerMenuView();
     //   },
     // ),
   ]);

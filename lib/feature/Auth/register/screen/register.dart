@@ -20,7 +20,7 @@ import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
 import 'package:tima_app/core/constants/formValidation.dart';
 import 'package:tima_app/core/constants/textconst.dart';
-import 'package:tima_app/feature/Auth/register/registerController.dart';
+import 'package:tima_app/feature/Auth/register/builder/registerController.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -1248,7 +1248,7 @@ class _RegisterScreenState extends RegisterController {
                           counterText: "",
                           labelText:
                               "Contact Mobile${endController.length + 1}",
-                          enabledBorder: const OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           hintStyle: const TextStyle(
@@ -1265,12 +1265,12 @@ class _RegisterScreenState extends RegisterController {
                             fontWeight: FontWeight.w300,
                             letterSpacing: 1.2,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
+                          // errorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(color: Colors.red),
+                          // ),
+                          // focusedErrorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(color: Colors.grey),
+                          // ),
                         ),
                         controller: endcontroller,
                         validator: ((value) {
@@ -1285,7 +1285,7 @@ class _RegisterScreenState extends RegisterController {
                         cursorColor: Colors.grey,
                         enableInteractiveSelection: false,
                         onTap: () async {},
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -1295,7 +1295,7 @@ class _RegisterScreenState extends RegisterController {
                           hintText: "Contact Email",
                           labelText:
                               "Contact Email${emailcontrollers.length + 1}",
-                          enabledBorder: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           hintStyle: const TextStyle(
@@ -1312,12 +1312,12 @@ class _RegisterScreenState extends RegisterController {
                             fontWeight: FontWeight.w300,
                             letterSpacing: 1.2,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
+                          // errorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(color: Colors.red),
+                          // ),
+                          // focusedErrorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(color: Colors.grey),
+                          // ),
                         ),
                         controller: emailcontroller,
                         validator: form_validation.validateEmail,

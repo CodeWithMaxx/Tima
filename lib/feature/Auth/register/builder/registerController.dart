@@ -12,7 +12,7 @@ import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
-import 'package:tima_app/feature/Auth/register/register.dart';
+import 'package:tima_app/feature/Auth/register/screen/register.dart';
 
 abstract class RegisterController extends State<RegisterScreen> {
   final SecureStorageService _secureStorageService = SecureStorageService();
@@ -274,7 +274,7 @@ abstract class RegisterController extends State<RegisterScreen> {
       var serviceResponse = jsonDecode(pduct_service_resonse.body);
 
       if (pduct_service_resonse.statusCode == 200) {
-        if (serviceResponse['status'].toString() == "1") {
+        if (serviceResponse['status'] == 1) {
           setState(() {
             AllServicesData.addAll(serviceResponse['data']);
           });

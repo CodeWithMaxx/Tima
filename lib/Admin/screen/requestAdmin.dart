@@ -57,7 +57,7 @@ class _RequestAdminState extends AdminController {
                     height: 40,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class _RequestAdminState extends AdminController {
                           alignment: Alignment.centerLeft,
                           width: size.width,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: tfColor),
                           child: TextFormField(
                             // readOnly: true,
@@ -228,7 +228,7 @@ class _RequestAdminState extends AdminController {
                           alignment: Alignment.centerLeft,
                           width: size.width,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               color: tfColor),
                           child: TextFormField(
                             // readOnly: true,
@@ -330,7 +330,7 @@ class _RequestAdminState extends AdminController {
                     alignment: Alignment.centerLeft,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: TextFormField(
                       // readOnly: true,
@@ -377,7 +377,7 @@ class _RequestAdminState extends AdminController {
                     alignment: Alignment.centerLeft,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: TextFormField(
                       // readOnly: true,
@@ -424,7 +424,7 @@ class _RequestAdminState extends AdminController {
                     alignment: Alignment.centerLeft,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: TextFormField(
                       // readOnly: true,
@@ -545,7 +545,7 @@ class _RequestAdminState extends AdminController {
                   Container(
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: FormField<String>(
                       builder: (FormFieldState<String> state) {
@@ -635,7 +635,7 @@ class _RequestAdminState extends AdminController {
                     alignment: Alignment.centerLeft,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: TextFormField(
                       // readOnly: true,
@@ -675,7 +675,7 @@ class _RequestAdminState extends AdminController {
                     alignment: Alignment.centerLeft,
                     width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
                     child: TextFormField(
                       // readOnly: true,

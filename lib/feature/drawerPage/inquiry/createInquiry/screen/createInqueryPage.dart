@@ -52,38 +52,42 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 10.h,
                 ),
-                FormField<String>(
-                  builder: (FormFieldState<String> state) {
-                    return InputDecorator(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          hint: const Text("Select Enquiry Type"),
-                          value: inquiryTypeid,
-                          isDense: true,
-                          onChanged: (newValue) {
-                            setState(() {
-                              inquiryTypeid = newValue;
-                            });
-                            log(inquiryTypeid);
-                          },
-                          items: enquiryType.map((value) {
-                            return DropdownMenuItem(
-                              value: value['id'],
-                              child: Text(value['enq_type']),
-                              onTap: () {
-                                setState(() {
-                                  inquiryTypeid = value['id'];
-                                });
-                              },
-                            );
-                          }).toList(),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10), color: tfColor),
+                  child: FormField<String>(
+                    builder: (FormFieldState<String> state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            hint: const Text("Select Enquiry Type"),
+                            value: inquiryTypeid,
+                            isDense: true,
+                            onChanged: (newValue) {
+                              setState(() {
+                                inquiryTypeid = newValue;
+                              });
+                              log(inquiryTypeid);
+                            },
+                            items: enquiryType.map((value) {
+                              return DropdownMenuItem(
+                                value: value['id'],
+                                child: Text(value['enq_type']),
+                                onTap: () {
+                                  setState(() {
+                                    inquiryTypeid = value['id'];
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -93,40 +97,44 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 10.h,
                 ),
-                FormField<String>(
-                  builder: (FormFieldState<String> state) {
-                    return InputDecorator(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          hint: const Text("Select Branch"),
-                          value: branchesid,
-                          isDense: true,
-                          onChanged: (newValue) {
-                            setState(() {
-                              branchesid = newValue;
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10), color: tfColor),
+                  child: FormField<String>(
+                    builder: (FormFieldState<String> state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            hint: const Text("Select Branch"),
+                            value: branchesid,
+                            isDense: true,
+                            onChanged: (newValue) {
+                              setState(() {
+                                branchesid = newValue;
 
-                              getUserCall(branchesid);
-                            });
-                            log(branchesid);
-                          },
-                          items: branches.map((value) {
-                            return DropdownMenuItem(
-                              value: value['branch_id'],
-                              child: Text(value['branch_name']),
-                              onTap: () {
-                                setState(() {
-                                  branchesid = value['branch_id'];
-                                });
-                              },
-                            );
-                          }).toList(),
+                                getUserCall(branchesid);
+                              });
+                              log(branchesid);
+                            },
+                            items: branches.map((value) {
+                              return DropdownMenuItem(
+                                value: value['branch_id'],
+                                child: Text(value['branch_name']),
+                                onTap: () {
+                                  setState(() {
+                                    branchesid = value['branch_id'];
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -136,49 +144,53 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                FormField<String>(
-                  builder: (FormFieldState<String> state) {
-                    return InputDecorator(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          hint: const Text("Select User"),
-                          value: personid,
-                          isDense: true,
-                          onChanged: (dynamic newValue) {
-                            setState(() {
-                              if (newValue != "0") {
-                                personid = newValue;
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "--Not Selectable--");
-                                personid = "0";
-                              }
-                            });
-                            log(personid);
-                          },
-                          items: person.map((value) {
-                            return DropdownMenuItem(
-                              value: value['user_id'],
-                              onTap: value['user_id'] == userID
-                                  ? () {
-                                      Fluttertoast.showToast(
-                                          msg: "You Self not selectable");
-                                    }
-                                  : () {
-                                      setState(() {
-                                        personid = value['user_id'];
-                                      });
-                                    },
-                              child: Text(value['name'].toString()),
-                            );
-                          }).toList(),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10), color: tfColor),
+                  child: FormField<String>(
+                    builder: (FormFieldState<String> state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            hint: const Text("Select User"),
+                            value: personid,
+                            isDense: true,
+                            onChanged: (dynamic newValue) {
+                              setState(() {
+                                if (newValue != "0") {
+                                  personid = newValue;
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "--Not Selectable--");
+                                  personid = "0";
+                                }
+                              });
+                              log(personid);
+                            },
+                            items: person.map((value) {
+                              return DropdownMenuItem(
+                                value: value['user_id'],
+                                onTap: value['user_id'] == userID
+                                    ? () {
+                                        Fluttertoast.showToast(
+                                            msg: "You Self not selectable");
+                                      }
+                                    : () {
+                                        setState(() {
+                                          personid = value['user_id'];
+                                        });
+                                      },
+                                child: Text(value['name'].toString()),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -188,38 +200,42 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                FormField<String>(
-                  builder: (FormFieldState<String> state) {
-                    return InputDecorator(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          hint: const Text("Select Services"),
-                          value: productserviceTypeid,
-                          isDense: true,
-                          onChanged: (newValue) {
-                            setState(() {
-                              productserviceTypeid = newValue;
-                            });
-                            log(productserviceTypeid);
-                          },
-                          items: productserviceType.map((value) {
-                            return DropdownMenuItem(
-                              value: value['id'],
-                              child: Text(value['name'].toString()),
-                              onTap: () {
-                                setState(() {
-                                  productserviceTypeid = value['id'];
-                                });
-                              },
-                            );
-                          }).toList(),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10), color: tfColor),
+                  child: FormField<String>(
+                    builder: (FormFieldState<String> state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            hint: const Text("Select Services"),
+                            value: productserviceTypeid,
+                            isDense: true,
+                            onChanged: (newValue) {
+                              setState(() {
+                                productserviceTypeid = newValue;
+                              });
+                              log(productserviceTypeid);
+                            },
+                            items: productserviceType.map((value) {
+                              return DropdownMenuItem(
+                                value: value['id'],
+                                child: Text(value['name'].toString()),
+                                onTap: () {
+                                  setState(() {
+                                    productserviceTypeid = value['id'];
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -229,7 +245,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -265,7 +283,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -300,7 +320,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -332,7 +354,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -365,7 +389,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -405,7 +431,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -439,7 +467,9 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 8.h,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: tfColor),
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
