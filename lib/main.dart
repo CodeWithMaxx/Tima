@@ -11,6 +11,7 @@ import 'package:tima_app/router/routes/routerConfig.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 

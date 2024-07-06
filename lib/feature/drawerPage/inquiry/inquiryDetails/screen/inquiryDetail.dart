@@ -19,7 +19,6 @@ class InquiryDeatil extends StatefulWidget {
 class _InquiryDeatilState extends InquiryDetailController {
   @override
   void initState() {
-    // TODO: implement initState
     getInquiryDataFromApi();
     super.initState();
   }

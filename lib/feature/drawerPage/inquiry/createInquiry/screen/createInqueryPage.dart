@@ -35,7 +35,7 @@ class _CreateInquiryState extends CreateInquiryController {
         title: Padding(
             padding: const EdgeInsets.only(left: 40.0),
             child: lebelText(
-                labelText: 'Create Inquiry', size: 22, color: blueColor)),
+                labelText: 'Create Inquiry', size: 20, color: blueColor)),
       ),
       body: Form(
         key: creatformkey,
@@ -47,7 +47,7 @@ class _CreateInquiryState extends CreateInquiryController {
               children: [
                 lebelText(
                     labelText: 'Select Inquiry Type',
-                    size: 16.5,
+                    size: 14.2,
                     color: blueColor),
                 SizedBox(
                   height: 10.h,
@@ -89,7 +89,7 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Select Branch', size: 16.5, color: blueColor),
+                    labelText: 'Select Branch', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -132,7 +132,7 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Select User', size: 16.5, color: blueColor),
+                    labelText: 'Select User', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
@@ -184,7 +184,7 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Select Services', size: 16.5, color: blueColor),
+                    labelText: 'Select Services', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
@@ -225,12 +225,11 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Client Name', size: 16.5, color: blueColor),
+                    labelText: 'Client Name', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -262,12 +261,11 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Contact Person', size: 16.5, color: blueColor),
+                    labelText: 'Contact Person', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -298,12 +296,11 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Contact Number', size: 16.5, color: blueColor),
+                    labelText: 'Contact Number', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 10.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -331,12 +328,11 @@ class _CreateInquiryState extends CreateInquiryController {
                   height: 10.h,
                 ),
                 lebelText(
-                    labelText: 'Vendor Name', size: 16.5, color: blueColor),
+                    labelText: 'Vendor Name', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -365,12 +361,11 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 10.h,
                 ),
-                lebelText(labelText: 'Price', size: 16.5, color: blueColor),
+                lebelText(labelText: 'Price', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -405,13 +400,12 @@ class _CreateInquiryState extends CreateInquiryController {
                 ),
                 lebelText(
                     labelText: 'Target Bussiness',
-                    size: 16.5,
+                    size: 14.2,
                     color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,
@@ -441,12 +435,11 @@ class _CreateInquiryState extends CreateInquiryController {
                 SizedBox(
                   height: 10.h,
                 ),
-                lebelText(labelText: 'Remark', size: 16.5, color: blueColor),
+                lebelText(labelText: 'Remark', size: 14.2, color: blueColor),
                 SizedBox(
                   height: 8.h,
                 ),
                 SizedBox(
-                  height: 50,
                   width: size.width,
                   child: TextFormField(
                     // readOnly: true,

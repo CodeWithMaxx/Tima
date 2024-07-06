@@ -1,6 +1,4 @@
-class NextVisitParams {
-  String startDate;
-  String endDate;
-
-  NextVisitParams({required this.startDate, required this.endDate});
+class ReportModel {
+  final String message;
+  ReportModel({required this.message});
 }

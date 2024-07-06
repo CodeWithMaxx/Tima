@@ -13,12 +13,12 @@ String getEnquiryDetailModelToJson(GetEnquiryDetailModel data) =>
 class GetEnquiryDetailModel {
   int? status;
   String? message;
-  List<Datum>? data;
+  List<Datum> data;
 
   GetEnquiryDetailModel({
     this.status,
     this.message,
-    this.data,
+    required this.data,
   });
 
   factory GetEnquiryDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -31,7 +31,7 @@ class GetEnquiryDetailModel {
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 

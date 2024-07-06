@@ -10,9 +10,11 @@ import 'package:tima_app/core/models/enquiryviewdetailmodel.dart';
 import 'package:tima_app/core/models/generatedinquirymodel.dart';
 
 class InquiryProvider with ChangeNotifier {
-  GetEnquiryDetailModel enquirydetail = GetEnquiryDetailModel();
-  var enquiryvisitetail = GetEnquiryViewDetailModel();
+  GetEnquiryDetailModel enquirydetail = GetEnquiryDetailModel(data: []);
+  List enquirydetailList = [];
+  var enquiryvisiDetail = GetEnquiryViewDetailModel();
   GeneratedInquiryModel generatedInquiryModel = GeneratedInquiryModel();
+  List dataList = [];
   var inquirydetail = GetEnquiryDetailViewModel();
   bool enquiryvisitdetailload = false;
   bool rejectenquiryload = false;
@@ -35,8 +37,10 @@ class InquiryProvider with ChangeNotifier {
       var responsedata = jsonDecode(result.body);
       log("client getenquiry_detail body " + body.toString());
       log("client getenquiry_detail response " + result.body.toString());
-      var data = GetEnquiryDetailModel.fromJson(responsedata);
-      enquirydetail = data;
+      enquirydetailList.add(responsedata['data']);
+      GetEnquiryDetailModel.fromJson(responsedata);
+
+      notifyListeners();
       // log("client getenquiry_detail response " +
       //     enquirydetail.data!.length.toString());
       Fluttertoast.showToast(msg: responsedata['message']);
@@ -55,7 +59,7 @@ class InquiryProvider with ChangeNotifier {
     if (result.statusCode == 200) {
       var responsedata = jsonDecode(result.body);
       log("client getenquiry_detail body: $body");
-      log("client getenquiry_detail response: ${result.body} ");
+      log("client getenquiry_detail response: ${result.body}");
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 
@@ -74,8 +78,8 @@ class InquiryProvider with ChangeNotifier {
       log("client getenquiry_detail body :$body ");
       log("client getenquiry_detail response: $result.body");
       var data = GetEnquiryViewDetailModel.fromJson(responsedata);
-      enquiryvisitetail = data;
-      log("client getenquiryView_detail response: ${enquiryvisitetail.data!.length} ");
+      enquiryvisiDetail = data;
+      log("client getenquiryView_detail response: ${enquiryvisiDetail.data!.length} ");
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 
@@ -111,6 +115,8 @@ class InquiryProvider with ChangeNotifier {
       log("client getgenerateEnquiryapi response: ${result.body}");
       var data = GeneratedInquiryModel.fromJson(responsedata);
       generatedInquiryModel = data;
+      dataList.add(responsedata['data']);
+      notifyListeners();
       // log("client getgenerateEnquiryapi response length " +
       //     generatedInquiryModel.data!.length.toString());
       Fluttertoast.showToast(msg: responsedata['message']);

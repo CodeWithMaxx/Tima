@@ -28,12 +28,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   final SecureStorageService _secureStorageService = SecureStorageService();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  final storageHub = const FlutterSecureStorage();
+
+  String? userEmail;
+  String? userName;
   int currentSlider = 0;
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     callHomeBannerFromApi();
+    usreInit();
     super.initState();
+  }
+
+  usreInit() async {
+    userName = await storageHub.read(key: StorageKeys.NameKey);
+    userEmail = await storageHub.read(key: StorageKeys.emailKey);
+    setState(() {});
   }
 
   bool isLoading = true;
@@ -51,8 +62,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   String titlemessage = "Tima";
   bool isImageLoading = true;
   List<String> imgList = [];
-  String? userEmail;
-  String? userName;
   // var logoMessage;
   List imageSliders = ['assets/banner.jpg', 'assets/banner1.jpg'];
 
@@ -92,8 +101,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
             log("userLogin_title : $title ");
             // imageSliders.addAll(bannerDataDecoded['data']);
-            userName = username;
-            userEmail = useremail;
+            // userName = username;
+            // userEmail = useremail;
 
             imgList = List.from(bannerDataDecoded['data']);
           });
@@ -152,8 +161,17 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             SizedBox(
               height: 60.h,
             ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'assets/timaApplogo.jpg',
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
+            ),
             SizedBox(
-              height: 50.h,
+              height: 20.h,
             ),
             txtHelper()
                 .heading1Text(title.toString().toString(), 25, blueColor),
@@ -228,8 +246,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           children: [
             SizedBox(
               // padding: const EdgeInsets.only(left: 20),
-              height: 200,
-              width: double.infinity,
+              height: 250,
+              width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -247,18 +265,19 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   const SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                  Container(
+                    padding: EdgeInsets.only(left: 15.w),
+                    width: MediaQuery.of(context).size.width,
                     child: Text(
                       userName.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(userEmail.toString()),
-                  ),
+                  Container(
+                      padding: EdgeInsets.only(left: 15.w),
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(userEmail.toString())),
                   const SizedBox(
                     height: 12,
                   ),
@@ -303,7 +322,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             ),
             ListTile(
               onTap: () {
-                GoRouter.of(context).pushNamed(routerConst.recivedInquiry);
+                GoRouter.of(context)
+                    .pushNamed(routerConst.recivedInquiry, extra: '0');
               },
               leading: const Icon(Icons.calendar_today_rounded),
               title: const Text(

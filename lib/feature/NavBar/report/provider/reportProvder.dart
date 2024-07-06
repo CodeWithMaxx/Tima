@@ -2,74 +2,70 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
-import 'package:tima_app/DataBase/keys/keys.dart';
-import 'package:tima_app/core/constants/apiUrlConst.dart';
-import 'package:tima_app/core/models/attendancemodel.dart';
-import 'package:tima_app/core/models/enquiryviewdetailmodel.dart';
+import 'package:tima_app/core/models/nextVisitDataModel.dart';
 import 'package:tima_app/core/models/nextvisitmodel.dart';
-import 'package:tima_app/feature/NavBar/report/models/nextvisitperams.dart';
 
 class ReportProvider extends ChangeNotifier {
   final client = http.Client();
-  GetEnquiryViewDetailModel enquiryVisitDetail = GetEnquiryViewDetailModel();
-  final SecureStorageService _secureStorageService = SecureStorageService();
-  AttendanceModel attendanceData = AttendanceModel();
-  var nextVisitLoad = false;
-  var enquiryVisitDetailLoad = false;
-  var attendanceDataLoad = false;
-  List enquiryType = [];
   var startDateController = "";
   var endDateController = "";
-  List<NextVisitModel> nextVisitData = [];
+  final SecureStorageService secureStorageService = SecureStorageService();
+  // GetEnquiryViewDetailModel enquiryVisitDetail = GetEnquiryViewDetailModel();
 
-  fatchNextVisitData(NextVisitParams nextVisiParams) async {
+  // * inquiryvisit
+
+  List inquiryVisitDetailList = [];
+  String inquiryVisitMessage = '';
+  // * attendence tab
+
+  List<dynamic> attendanceDataList = [];
+  var attendanceDataLoad = false;
+  String attendanceMessage = '';
+
+  var enquiryVisitDetailLoad = false;
+  List enquiryType = [];
+
+  // * next visit
+  String nextVisitMessage = '';
+  List nextVisitDataList = [];
+  var nextVisitLoad = false;
+  NextVisitModel nextVisitModel = NextVisitModel();
+
+  List<VisitData> nextVisitDataModelList = [];
+
+  void getNextVisitApi(String url, dynamic body) async {
     nextVisitLoad = true;
     notifyListeners();
-    String? userid =
-        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
-    var url = Uri.parse(show_next_visit_app_url);
 
-    final Response = await client.post(url, body: {
-      'user_id': userid.toString(),
-      'from_date': nextVisiParams.startDate,
-      'to_date': nextVisiParams.endDate
-    });
+    var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
 
-    log(Response.body);
+    if (response.statusCode == 200) {
+      var decodedResponse = jsonDecode(response.body);
+      notifyListeners();
+      log("client NextVisitModel body -->body");
+      log("client NextVisitModel response -->${response.body}");
+      // String message = decodedResponse['message'];
+      nextVisitMessage =
+          decodedResponse['message']?.toString() ?? 'No message available';
+      notifyListeners();
+      nextVisitDataList.add(decodedResponse['data']);
+      notifyListeners();
 
-    var decodedResponse = jsonDecode(Response.body);
-    notifyListeners();
+      nextVisitDataModelList = (decodedResponse['data'] as List)
+          .map((i) => VisitData.fromJson(i))
+          .toList();
 
-    if (Response.statusCode == 200) {
-      NextVisitModel nextVisitModel = NextVisitModel.fromJson(decodedResponse);
-      nextVisitData.addAll(nextVisitModel as List<NextVisitModel>);
       nextVisitLoad = false;
       notifyListeners();
+      Fluttertoast.showToast(msg: decodedResponse['message']);
     }
+    nextVisitLoad = false;
+    notifyListeners();
   }
-
-  // void getNextVisitApi(String url, dynamic body) async {
-  //   nextVisitLoad = true;
-  //   notifyListeners();
-
-  //   var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
-
-  //   if (response.statusCode == 200) {
-  //     var decodedResponse = jsonDecode(response.body);
-  //     notifyListeners();
-  //     log("client NextVisitModel body -->body");
-  //     log("client NextVisitModel response -->${response.body}");
-  //     NextVisitModel.fromJson(decodedResponse);
-  //     nextVisitLoad = false;
-  //     notifyListeners();
-  //     // Fluttertoast.showToast(msg: responseData['message']);
-  //   }
-  //   nextVisitLoad = false;
-  //   notifyListeners();
-  // }
 
   void getEnquiryDetailApi(String url, dynamic body) async {
     log("client getenquiry_detail body --$url");
@@ -81,8 +77,12 @@ class ReportProvider extends ChangeNotifier {
     log("client getenquiry_detail response --> ${response.body}");
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
-      enquiryVisitDetail = GetEnquiryViewDetailModel.fromJson(responseData);
-      log("client getenquiryView_detail response -->${enquiryVisitDetail.data!.length} ");
+      // enquiryVisitDetail = GetEnquiryViewDetailModel.fromJson(responseData);
+      inquiryVisitDetailList.add(responseData['data']);
+      inquiryVisitMessage = responseData['message'];
+      notifyListeners();
+
+      log("client getenquiryView_detail response -->${nextVisitDataList.length} ");
       enquiryVisitDetailLoad = false;
       notifyListeners();
       // Fluttertoast.showToast(msg: responseData['message']);
@@ -99,7 +99,9 @@ class ReportProvider extends ChangeNotifier {
     log("client attendancedata response $response.body");
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
-      attendanceData = AttendanceModel.fromJson(responseData);
+      // attendanceData = AttendanceModel.fromJson(responseData);
+      attendanceMessage = responseData['message'];
+      attendanceDataList.add(responseData['data']);
       attendanceDataLoad = false;
       notifyListeners();
     }

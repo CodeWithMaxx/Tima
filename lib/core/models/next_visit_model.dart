@@ -1,36 +1,8 @@
-import 'dart:convert';
+class NextVisitDataModel {
+  var message;
+  List<Datum> useData;
 
-NextVisitModel nextVisitModelFromJson(String str) =>
-    NextVisitModel.fromJson(json.decode(str));
-
-String nextVisitModelToJson(NextVisitModel data) => json.encode(data.toJson());
-
-class NextVisitModel {
-  int? status;
-  dynamic message;
-  List<Datum>? data;
-
-  NextVisitModel({
-    this.status,
-    this.message,
-    this.data,
-  });
-
-  factory NextVisitModel.fromJson(Map<String, dynamic> json) => NextVisitModel(
-        status: json["status"],
-        message: json["message"],
-        data: json["data"] != null
-            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
-            : null,
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "data": data != null
-            ? List<dynamic>.from(data!.map((x) => x.toJson()))
-            : null,
-      };
+  NextVisitDataModel(this.message, this.useData);
 }
 
 class Datum {

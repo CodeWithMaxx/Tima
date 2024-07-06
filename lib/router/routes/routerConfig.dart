@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:tima_app/Admin/screen/requestAdmin.dart';
 import 'package:tima_app/Error/401.dart';
-import 'package:tima_app/feature/Auth/forgotPassword/forgotPassword.dart';
+import 'package:tima_app/feature/Auth/forgotPassword/screen/forgotPassword.dart';
 import 'package:tima_app/feature/Auth/loginPages/screen/loginPage.dart';
 import 'package:tima_app/feature/Auth/register/register.dart';
 import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
-import 'package:tima_app/feature/attendence/markAttendenc.dart';
+import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/drawerPage/homeLocation/homelocation.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/createInquiry/screen/createInqueryPage.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/screen/generateInquiry.dart';
@@ -17,7 +17,6 @@ import 'package:tima_app/feature/visit/visitDetails/visitDetail.dart';
 import 'package:tima_app/router/routeParams/inquiryDetailParams.dart';
 import 'package:tima_app/router/routeParams/nextVisitParams.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
-import 'package:tima_app/testing/nextvisitapi.dart';
 
 class routerConfigue {
   final GoRouter pageRouter =
@@ -207,7 +206,10 @@ class routerConfigue {
       path: routerConst.recivedInquiry,
       name: routerConst.recivedInquiry,
       builder: (context, state) {
-        return ReciveInquiry();
+        String indexlistno = state.extra as String;
+        return ReciveInquiry(
+          indexlistno: indexlistno,
+        );
       },
     ),
 
@@ -224,12 +226,12 @@ class routerConfigue {
       },
     ),
 
-    GoRoute(
-      path: routerConst.nextVisitDemo,
-      name: routerConst.nextVisitDemo,
-      builder: (context, state) {
-        return const NextVisitApiTesting();
-      },
-    ),
+    // GoRoute(
+    //   path: routerConst.nextVisitDemo,
+    //   name: routerConst.nextVisitDemo,
+    //   builder: (context, state) {
+    //     return const NextVisitApiTesting();
+    //   },
+    // ),
   ]);
 }

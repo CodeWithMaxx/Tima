@@ -33,7 +33,7 @@ class SecureStorageService {
 
   // ! save and get userID
   Future<void> saveUserId({required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserID({required String key}) async {
@@ -44,7 +44,7 @@ class SecureStorageService {
 
   Future<void> saveUserName(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserName({required String key}) async {
@@ -55,7 +55,7 @@ class SecureStorageService {
 
   Future<void> saveUserEmail(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserEmailID({required String key}) async {
@@ -66,7 +66,7 @@ class SecureStorageService {
 
   Future<void> saveUserMobile(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserMobile({required String key}) async {
@@ -77,7 +77,7 @@ class SecureStorageService {
 
   Future<void> saveCategory(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserCategory({required String key}) async {
@@ -88,7 +88,7 @@ class SecureStorageService {
 
   Future<void> saveCategoryName(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getCategoryName({required String key}) async {
@@ -99,7 +99,7 @@ class SecureStorageService {
 
   Future<void> saveUserComanyId(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserCompanyID({required String key}) async {
@@ -110,7 +110,7 @@ class SecureStorageService {
 
   Future<void> saveUserBranchId(
       {required String key, required String value}) async {
-    await saveUserData(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 
   Future<String?> getUserBranchID({required String key}) async {
@@ -121,7 +121,7 @@ class SecureStorageService {
 
   Future<void> saveUserLoginToken(
       {required String key, required bool value}) async {
-    await saveUserData(key: key, value: value.toString());
+    await _secureStorage.write(key: key, value: value.toString());
   }
 
   Future<String?> getUserLogInToken({required bool key}) async {
@@ -131,7 +131,7 @@ class SecureStorageService {
   // ! save and get tima logo
 
   Future<void> saveTimaLogo({required String key, required bool value}) async {
-    await saveUserData(key: key, value: value.toString());
+    await _secureStorage.write(key: key, value: value.toString());
   }
 
   Future<String?> getTimaLogo({required String key}) async {
@@ -142,7 +142,7 @@ class SecureStorageService {
 
   Future<void> saveUpdateLocation(
       {required String key, required bool value}) async {
-    await saveUserData(key: key, value: value.toString());
+    await _secureStorage.write(key: key, value: value.toString());
   }
 
   Future<String?> getUpdateLocation({required bool key}) async {

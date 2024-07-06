@@ -12,20 +12,25 @@ import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
-import 'package:tima_app/feature/Auth/forgotPassword/forgotPassword.dart';
+import 'package:tima_app/feature/Auth/forgotPassword/screen/forgotPassword.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
-class ForgotPasswordController extends State<ForgotPasswordScreen> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-
+abstract class ForgotPasswordController extends State<ForgotPasswordScreen> {
   SecureStorageService _secureStorageService = SecureStorageService();
+  dynamic isLoggedIn;
 
   final newPassController = TextEditingController();
   final rePassController = TextEditingController();
+
+  userAppLoginStatus() async {
+    isLoggedIn =
+        await _secureStorageService.getUserData(key: StorageKeys.loginKey);
+    if (isLoggedIn != null) {
+      GoRouter.of(context).goNamed(routerConst.homeNavBar);
+    } else {
+      GoRouter.of(context).goNamed(routerConst.loginScreen);
+    }
+  }
 
   Future<void> resetUserPassword() async {
     String? userId =

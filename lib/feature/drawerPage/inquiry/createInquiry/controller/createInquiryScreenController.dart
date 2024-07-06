@@ -13,7 +13,6 @@ abstract class CreateInquiryController extends State<CreateInquiry> {
   GlobalKey<FormState> creatformkey = GlobalKey<FormState>();
   LocationProvider locationProvider = LocationProvider();
   SecureStorageService secureStorageService = SecureStorageService();
-
   final clientNameController = TextEditingController();
   final contactPersonController = TextEditingController();
   final contactNoController = TextEditingController();
@@ -27,18 +26,20 @@ abstract class CreateInquiryController extends State<CreateInquiry> {
   List productserviceType = [];
   List branches = [];
   var personid = "0";
-  var inquiryTypeid;
+  var enquiryTypeid;
   var productserviceTypeid;
   var branchesid;
+  var userLogedin_id;
   String? userID;
+  var inquiryTypeid;
 
   @override
   void initState() {
     super.initState();
     clearControllersData();
-    getInquiryTypeCallApi();
-    getBranchesCall();
-    getProductServices();
+    // getInquiryTypeCallApi();
+    // getBranchesCall();
+    // getProductServices();
   }
 
   clearControllersData() async {
@@ -77,10 +78,13 @@ abstract class CreateInquiryController extends State<CreateInquiry> {
     var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
     if (result.statusCode == 200) {
       var responsedata = jsonDecode(result.body);
-      setState(() {
+      if (responsedata['status'] == 1) {
         enquiryType.addAll(responsedata['data']);
-        log("enquiryType : $enquiryType");
-      });
+      }
+      // setState(() {
+
+      //   log("enquiryType : $enquiryType");
+      // });
     }
   }
 

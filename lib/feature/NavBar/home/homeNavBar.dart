@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tima_app/Admin/screen/requestAdmin.dart';
 import 'package:tima_app/feature/NavBar/report/screen/reportList.dart';
-import 'package:tima_app/feature/attendence/markAttendenc.dart';
+import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/home/home.dart';
 
 class HomeNavBar extends StatefulWidget {

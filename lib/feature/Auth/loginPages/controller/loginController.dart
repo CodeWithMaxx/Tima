@@ -5,12 +5,13 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
-import 'package:tima_app/DataBase/model/dbmodel.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/feature/Auth/loginPages/screen/loginPage.dart';
@@ -18,7 +19,9 @@ import 'package:tima_app/router/routes/routerConst.dart';
 
 abstract class LoginController extends State<PhoneEmailLogin> {
   final SecureStorageService _secureStorageService = SecureStorageService();
-  DBModel? dbModel;
+  final storageHub = const FlutterSecureStorage();
+  // SharedPreference
+  // DBModel? dbModel;
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -32,6 +35,7 @@ abstract class LoginController extends State<PhoneEmailLogin> {
 
   // ! Login Mathod
   Future<void> appLogInAuthentication() async {
+    final prefs = await SharedPreferences.getInstance();
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     final client = http.Client();
@@ -62,8 +66,16 @@ abstract class LoginController extends State<PhoneEmailLogin> {
                 key: StorageKeys.NameKey,
                 value: loginResponseDecoded['data']['name']);
 
+            storageHub.write(
+                key: StorageKeys.NameKey,
+                value: loginResponseDecoded['data']['name']);
+
             // *save user_id on local database
             _secureStorageService.saveUserId(
+                key: StorageKeys.userIDKey,
+                value: loginResponseDecoded['data']['user_id']);
+
+            storageHub.write(
                 key: StorageKeys.userIDKey,
                 value: loginResponseDecoded['data']['user_id']);
 
@@ -77,8 +89,16 @@ abstract class LoginController extends State<PhoneEmailLogin> {
                 key: StorageKeys.emailKey,
                 value: loginResponseDecoded['data']['email']);
 
+            storageHub.write(
+                key: StorageKeys.emailKey,
+                value: loginResponseDecoded['data']['email']);
+
             // *save user_mobile on local database
             _secureStorageService.saveUserMobile(
+                key: StorageKeys.mobileKey,
+                value: loginResponseDecoded['data']['mobile']);
+
+            storageHub.write(
                 key: StorageKeys.mobileKey,
                 value: loginResponseDecoded['data']['mobile']);
 
@@ -100,9 +120,17 @@ abstract class LoginController extends State<PhoneEmailLogin> {
                 key: StorageKeys.companyIdKey,
                 value: loginResponseDecoded['data']['company']);
 
+            storageHub.write(
+                key: StorageKeys.companyIdKey,
+                value: loginResponseDecoded['data']['company']);
+
             // *save user_branch on local database
 
             _secureStorageService.saveUserBranchId(
+                key: StorageKeys.branchKey,
+                value: loginResponseDecoded['data']['branch']);
+
+            storageHub.write(
                 key: StorageKeys.branchKey,
                 value: loginResponseDecoded['data']['branch']);
 

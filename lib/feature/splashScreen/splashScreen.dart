@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen>
     }
 
     Timer(
-        const Duration(seconds: 3),
+        const Duration(seconds: 2),
         () => isLoggedIn
             ? GoRouter.of(context).goNamed(routerConst.homeNavBar)
             : GoRouter.of(context).goNamed(routerConst.loginScreen));

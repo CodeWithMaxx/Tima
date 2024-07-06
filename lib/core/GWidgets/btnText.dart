@@ -8,7 +8,7 @@ lebelText(
     Text(
       labelText,
       style: GoogleFonts.poppins(
-          fontSize: size, fontWeight: FontWeight.w400, color: color),
+          fontSize: size, fontWeight: FontWeight.w500, color: color),
     );
 
 headingTxt({

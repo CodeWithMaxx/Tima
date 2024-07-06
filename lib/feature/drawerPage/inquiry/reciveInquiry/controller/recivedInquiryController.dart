@@ -19,7 +19,7 @@ import 'package:tima_app/router/routes/routerConst.dart';
 abstract class RecivedInquiryController extends State<ReciveInquiry> {
   SecureStorageService secureStorageService = SecureStorageService();
   final InquiryProvider inquiryProvider = InquiryProvider();
-  var reject_msg_controller = new TextEditingController();
+  var reject_msg_controller = TextEditingController();
   DateTime selectedDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
   bool pageloder = true;
@@ -32,6 +32,7 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
         DateFormat('yyyy-MM-dd').format(selectedEndDate);
 
     getBranchesCall();
+    getInquiryDataFromApi();
 
     super.initState();
   }
@@ -41,8 +42,8 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
   List branches = [];
 
   Future<void> getBranchesCall() async {
-    String? companyID =
-        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    String? companyID = await secureStorageService.getUserCompanyID(
+        key: StorageKeys.companyIdKey);
     var url = getbranchestype_url;
     var body = ({'company_id': companyID, 'branch_id': '0'});
 
@@ -73,15 +74,15 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
   // DateTime selectedDate = DateTime.now();
   // DateTime selectedEndDate = DateTime.now();
   Future<void> selectStartDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
       initialDatePickerMode: DatePickerMode.day,
-    );
+    ) as DateTime;
 
-    if (picked != null) {
+    if (picked != '') {
       setState(() {
         selectedDate = picked;
         var date = DateFormat.yMd().format(selectedDate);
@@ -107,26 +108,6 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
         selectedEndDate = picked;
         inquiryProvider.endDateController =
             DateFormat('yyyy-MM-dd').format(selectedEndDate);
-        getInquiryDataFromApi();
-      });
-    }
-  }
-
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
-      initialDatePickerMode: DatePickerMode.day,
-    );
-    if (picked != null) {
-      setState(() {
-        selectedEndDate = picked;
-
-        inquiryProvider.endDateController =
-            DateFormat('yyyy-MM-dd').format(selectedEndDate);
-
         getInquiryDataFromApi();
       });
     }
@@ -244,9 +225,9 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
 
   Future<void> getInquiryDataFromApi() async {
     String? userID =
-        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+        await secureStorageService.getUserID(key: StorageKeys.userIDKey) ?? '0';
     var body = ({
-      'user_id': userID,
+      'user_id': userID.toString(),
       'from_date': inquiryProvider.startDateController,
       'to_date': inquiryProvider.endDateController,
       "inq_type": "received",

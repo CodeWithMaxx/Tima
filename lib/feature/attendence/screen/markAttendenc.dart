@@ -9,10 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
-import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/feature/attendence/builder/attendenceBuilder.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -23,116 +23,7 @@ class Markattendance extends StatefulWidget {
   State<Markattendance> createState() => _MarkattendanceState();
 }
 
-class _MarkattendanceState extends State<Markattendance> {
-  SecureStorageService _secureStorageService = SecureStorageService();
-  var branchesid;
-  List branches = [];
-
-  var client_controller = TextEditingController();
-  var vendor_controller = TextEditingController();
-
-  @override
-  void initState() {
-    getbranchescall();
-    getClients();
-    getplaces();
-    getVendors();
-    setState(() {});
-    super.initState();
-  }
-
-  String? selectedClientid;
-  String? selectedVendorid;
-  String? selectedAttendancePlacesid;
-
-  List ClientList = [];
-  List VendorList = [];
-  List AttendancePlaces = [];
-  getbranchescall() async {
-    var dataTime_Date = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    var dateTime_Time = DateFormat.Hms().format(DateTime.now());
-    log("datetime Date : $dataTime_Date ");
-    log("dateTime_Time :$dateTime_Time ");
-
-    // String? companyId =
-    //     await _secureStorageService().getcompanyId(key: StorageKeys.companyIdKey);
-    String? companyId = await _secureStorageService.getUserCompanyID(
-        key: StorageKeys.companyIdKey);
-    var url = getbranchestype_url;
-    var body = ({'company_id': companyId, 'branch_id': '0'});
-
-    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      setState(() {
-        branches.addAll(responsedata['data']);
-      });
-    }
-  }
-
-  getClients() async {
-    var url = get_client_data_url;
-    String? userId =
-        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
-    String? companyId = await _secureStorageService.getUserCompanyID(
-        key: StorageKeys.companyIdKey);
-    var body = ({
-      'id': '0',
-      "company_id": companyId,
-      "user_id": userId,
-    });
-    ClientList.clear();
-    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      setState(() {
-        ClientList.addAll(responsedata['data']);
-      });
-    }
-  }
-
-  getplaces() async {
-    var url = get_attendance_places_url;
-    var body = jsonEncode({'id': '0'});
-    AttendancePlaces.clear();
-    var result =
-        await ApiBaseHelper().postAPICall(Uri.parse(url), body.toString());
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      responsedata['data'].forEach((k, v) {
-        log('$k: $v');
-        setState(() {
-          AttendancePlaces.addAll([
-            {"id": "$k", "name": "$v"},
-          ]);
-        });
-      });
-    }
-  }
-
-  Future<void> getVendors() async {
-    String? userId =
-        await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
-    String? companyId = await _secureStorageService.getUserCompanyID(
-        key: StorageKeys.companyIdKey);
-
-    var url = get_vendor_data_url;
-    var body = ({
-      'id': '0',
-      "company_id": companyId,
-      "user_id": userId,
-    });
-    VendorList.clear();
-    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      setState(() {
-        VendorList.addAll(responsedata['data']);
-        log("VendorList : $VendorList");
-      });
-    }
-  }
-
+class _MarkattendanceState extends AttendenceBuilder {
   bool isShowUi = false;
   bool isShowUi2 = false;
   @override
@@ -535,13 +426,13 @@ class _MarkattendanceState extends State<Markattendance> {
                                     .format(DateTime.now());
                                 var dateTime_Time =
                                     DateFormat.Hms().format(DateTime.now());
-                                String? userId = await _secureStorageService
+                                String? userId = await secureStorageService
                                     .getUserID(key: StorageKeys.userIDKey);
-                                String? companyId = await _secureStorageService
-                                    .getUserCompanyID(
+                                String? companyId =
+                                    await secureStorageService.getUserCompanyID(
                                         key: StorageKeys.companyIdKey);
                                 String? branchID =
-                                    await _secureStorageService.getUserBranchID(
+                                    await secureStorageService.getUserBranchID(
                                         key: StorageKeys.branchKey);
 
                                 var url = Uri.parse(mark_attendance_in_url);
@@ -609,13 +500,13 @@ class _MarkattendanceState extends State<Markattendance> {
                                     .format(DateTime.now());
                                 var dateTime_Time =
                                     DateFormat.Hms().format(DateTime.now());
-                                String? userId = await _secureStorageService
+                                String? userId = await secureStorageService
                                     .getUserID(key: StorageKeys.userIDKey);
-                                String? companyId = await _secureStorageService
-                                    .getUserCompanyID(
+                                String? companyId =
+                                    await secureStorageService.getUserCompanyID(
                                         key: StorageKeys.companyIdKey);
                                 String? branchID =
-                                    await _secureStorageService.getUserBranchID(
+                                    await secureStorageService.getUserBranchID(
                                         key: StorageKeys.branchKey);
 
                                 var url = Uri.parse(

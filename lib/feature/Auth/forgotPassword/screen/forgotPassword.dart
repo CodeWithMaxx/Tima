@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_final_fields, unused_field
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
 import 'package:tima_app/core/constants/textconst.dart';
-import 'package:tima_app/feature/Auth/forgotPassword/forgotPassController.dart';
-import 'package:tima_app/router/routes/routerConst.dart';
+import 'package:tima_app/feature/Auth/forgotPassword/builder/forgotPassController.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -221,8 +219,7 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
                           color: blueColor,
                         ),
                         onPressed: () {
-                          GoRouter.of(context)
-                              .pushNamed(routerConst.homeNavBar);
+                          userAppLoginStatus();
                         },
                       ),
                     ),

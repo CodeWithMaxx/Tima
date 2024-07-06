@@ -73,7 +73,7 @@ class _RequestAdminState extends AdminController {
                             title: const Text(
                               "Client",
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 14.2, fontWeight: FontWeight.bold),
                             ),
                             onChanged: (dynamic val) async {
                               setSelectedRadioTile(val);
@@ -91,7 +91,8 @@ class _RequestAdminState extends AdminController {
                             groupValue: selectedRadioTile,
                             title: const Text("Vender",
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                                    fontSize: 14.2,
+                                    fontWeight: FontWeight.bold)),
                             onChanged: (dynamic val) {
                               setSelectedRadioTile(val);
                             },
@@ -112,7 +113,7 @@ class _RequestAdminState extends AdminController {
                           labelText: selectedRadioTile == 1
                               ? 'Client Name'
                               : 'Vendor Name',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -204,7 +205,7 @@ class _RequestAdminState extends AdminController {
                                 style: const TextStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16),
+                                    fontSize: 14.2),
                               ),
                             );
                           },
@@ -318,7 +319,7 @@ class _RequestAdminState extends AdminController {
                     children: [
                       lebelText(
                           labelText: 'Person Name',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -365,7 +366,7 @@ class _RequestAdminState extends AdminController {
                     children: [
                       lebelText(
                           labelText: 'Designation Name',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -412,7 +413,7 @@ class _RequestAdminState extends AdminController {
                     children: [
                       lebelText(
                           labelText: 'Contact No',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -456,7 +457,7 @@ class _RequestAdminState extends AdminController {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       lebelText(
-                          labelText: 'Start Time', size: 16.5, color: blueColor)
+                          labelText: 'Start Time', size: 14.2, color: blueColor)
                     ],
                   ),
                   SizedBox(
@@ -490,7 +491,7 @@ class _RequestAdminState extends AdminController {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       lebelText(
-                          labelText: 'Pick Image', size: 16.5, color: blueColor)
+                          labelText: 'Pick Image', size: 14.2, color: blueColor)
                     ],
                   ),
                   SizedBox(
@@ -534,7 +535,7 @@ class _RequestAdminState extends AdminController {
                     children: [
                       lebelText(
                           labelText: 'Select Product/Service',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -624,7 +625,7 @@ class _RequestAdminState extends AdminController {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       lebelText(
-                          labelText: 'Complaint', size: 16.5, color: blueColor),
+                          labelText: 'Complaint', size: 14.2, color: blueColor),
                     ],
                   ),
                   SizedBox(
@@ -664,7 +665,7 @@ class _RequestAdminState extends AdminController {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       lebelText(
-                          labelText: 'Remark', size: 16.5, color: blueColor),
+                          labelText: 'Remark', size: 14.2, color: blueColor),
                     ],
                   ),
                   SizedBox(
@@ -721,7 +722,7 @@ class _RequestAdminState extends AdminController {
                       ),
                       lebelText(
                           labelText: 'Select Date',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
@@ -760,7 +761,7 @@ class _RequestAdminState extends AdminController {
                       ),
                       lebelText(
                           labelText: 'Select Time',
-                          size: 16.5,
+                          size: 14.2,
                           color: blueColor),
                     ],
                   ),
