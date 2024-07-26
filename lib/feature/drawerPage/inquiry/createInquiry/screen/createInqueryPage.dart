@@ -13,7 +13,6 @@ import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
-import 'package:tima_app/core/constants/formValidation.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/createInquiry/controller/createInquiryScreenController.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -330,7 +329,18 @@ class _CreateInquiryState extends CreateInquiryController {
                     maxLength: 10,
                     keyboardType: TextInputType.number,
 
-                    validator: form_validation.validatephonenumber,
+                    validator: (value) {
+                      RegExp regex = RegExp(r'^[6-9][0-9]{9}$');
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Your Phone Number';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Invalid Contact No';
+                      } else if (value.length != 10) {
+                        return 'Phone Number is not valid';
+                      }
+                      return null;
+                    },
+
                     decoration: InputDecoration(
                       counterText: "",
                       hintText: "Contact Number",

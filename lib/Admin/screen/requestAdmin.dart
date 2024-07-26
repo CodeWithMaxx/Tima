@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +17,7 @@ import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
-import 'package:tima_app/core/constants/formValidation.dart';
+import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -432,7 +433,18 @@ class _RequestAdminState extends AdminController {
                       maxLength: 10,
                       keyboardType: TextInputType.number,
 
-                      validator: form_validation.validatephonenumber,
+                      validator: (value) {
+                        RegExp regex = RegExp(r'^[6-9][0-9]{9}$');
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Your Phone Number';
+                        } else if (!regex.hasMatch(value)) {
+                          return 'Invalid Contact No';
+                        } else if (value.length != 10) {
+                          return 'Phone Number is not valid';
+                        }
+                        return null;
+                      },
+
                       decoration: InputDecoration(
                           counterText: "",
                           hintText: "Contact No",
@@ -512,7 +524,7 @@ class _RequestAdminState extends AdminController {
                           color: tfColor),
                       child: image != null
                           ? Image.file(
-                              image!,
+                              image ?? File(''),
                               fit: BoxFit.cover,
                               width:
                                   200, // Set the desired width of the square box
@@ -797,9 +809,9 @@ class _RequestAdminState extends AdminController {
                       onTap: formloder == true
                           ? null
                           : () async {
-                              List productservice_id = [];
+                              List productServiceID = [];
                               if (_formKey.currentState!.validate()) {
-                                if (selectedRadioTile != '') {
+                                if (selectedRadioTile.toString() != '') {
                                   if (selectedRadioTile == 1) {
                                     if (selectedClientid != null) {
                                       if (selectedStartTime != null) {
@@ -813,15 +825,14 @@ class _RequestAdminState extends AdminController {
 
                                               // if (selectedDate != null) {
                                               //   if (selectedTime != null) {
-                                              productservice_id
+                                              productServiceID
                                                   .add(productServiceTypeID);
-                                              String? userID =
+                                              String? userid =
                                                   await secureStorageService
                                                       .getUserID(
                                                           key: StorageKeys
                                                               .userIDKey);
-
-                                              String? companyID =
+                                              String? usercompanyid =
                                                   await secureStorageService
                                                       .getUserCompanyID(
                                                           key: StorageKeys
@@ -834,8 +845,8 @@ class _RequestAdminState extends AdminController {
                                                   DateFormat.Hms()
                                                       .format(DateTime.now());
                                               var body = ({
-                                                'user_id': userID,
-                                                "company_id": companyID,
+                                                'user_id': userid,
+                                                "company_id": usercompanyid,
                                                 'visit_at': 'client',
                                                 'client_id':
                                                     selectedClientid.toString(),
@@ -853,8 +864,7 @@ class _RequestAdminState extends AdminController {
                                                     personMobileNoController
                                                         .text,
                                                 'product_service':
-                                                    productservice_id
-                                                        .toString(),
+                                                    productServiceID.toString(),
                                                 'query_complaint':
                                                     quiryController.text,
                                                 'order_done': selectedOption,
@@ -867,16 +877,16 @@ class _RequestAdminState extends AdminController {
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
-                                              log("postAPICall Visit body " +
-                                                  body.toString());
-                                              // var result = await ApiBaseHelper()
-                                              //     .postAPICall(url, body);
+                                              log("postAPICall Visit body :$body");
                                               var request =
                                                   http.MultipartRequest(
-                                                      'POST', url);
+                                                      'POST',
+                                                      Uri.parse(
+                                                          get_visitsave_url));
                                               request.fields.addAll({
-                                                'user_id': '$userID',
-                                                "company_id": '$companyID',
+                                                'user_id': userid.toString(),
+                                                "company_id":
+                                                    usercompanyid.toString(),
                                                 'visit_at': 'client',
                                                 'client_id':
                                                     selectedClientid.toString(),
@@ -894,11 +904,11 @@ class _RequestAdminState extends AdminController {
                                                     personMobileNoController
                                                         .text,
                                                 'product_service':
-                                                    productservice_id
-                                                        .toString(),
+                                                    productServiceID.toString(),
                                                 'query_complaint':
                                                     quiryController.text,
-                                                'order_done': '$selectedOption',
+                                                'order_done':
+                                                    selectedOption.toString(),
                                                 'next_visit': selectedDate !=
                                                         null
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
@@ -910,15 +920,17 @@ class _RequestAdminState extends AdminController {
                                               });
                                               request.files.add(
                                                   await http.MultipartFile
-                                                      .fromPath('personimage',
+                                                      .fromPath('person_image',
                                                           image!.path));
-
+                                              // var result = await ApiBaseHelper()
+                                              //     .postAPICall(url, body);
                                               http.StreamedResponse responses =
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              log("postAPICall Enquiry response " +
-                                                  result.body.toString());
+                                              print(
+                                                  "postAPICall Enquiry response " +
+                                                      result.body.toString());
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -927,10 +939,12 @@ class _RequestAdminState extends AdminController {
                                                     jsonDecode(result.body);
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
-                                                log("Create Enquiry registration " +
-                                                    body.toString());
-                                                log("Create Enquiry registration " +
-                                                    result.body.toString());
+                                                print(
+                                                    "Create Enquiry registration " +
+                                                        body.toString());
+                                                print(
+                                                    "Create Enquiry registration " +
+                                                        result.body.toString());
                                                 toastMsg(
                                                     "${responsedata['message']}",
                                                     false);
@@ -972,31 +986,29 @@ class _RequestAdminState extends AdminController {
                                               setState(() {
                                                 formloder = true;
                                               });
-                                              productservice_id
+                                              productServiceID
                                                   .add(productServiceTypeID);
 
-                                              String? userID =
+                                              String? userid =
                                                   await secureStorageService
                                                       .getUserID(
                                                           key: StorageKeys
                                                               .userIDKey);
-                                              String? companyID =
+                                              String? usercompanyid =
                                                   await secureStorageService
                                                       .getUserCompanyID(
                                                           key: StorageKeys
                                                               .companyIdKey);
-                                              // var url =
-                                              //     Uri.parse(get_visitsave_url);
-                                              log("visit save url " +
-                                                  get_visitsave_url.toString());
+                                              var url =
+                                                  Uri.parse(get_visitsave_url);
                                               EndDate = DateFormat("yyyy-MM-dd")
                                                       .format(DateTime.now()) +
                                                   " " +
                                                   DateFormat.Hms()
                                                       .format(DateTime.now());
                                               var body = ({
-                                                'user_id': userID,
-                                                "company_id": companyID,
+                                                'user_id': userid,
+                                                "company_id": usercompanyid,
                                                 'visit_at': 'vendor',
                                                 'vendor_id':
                                                     selectedVendorid.toString(),
@@ -1014,8 +1026,7 @@ class _RequestAdminState extends AdminController {
                                                     personMobileNoController
                                                         .text,
                                                 'product_service':
-                                                    productservice_id
-                                                        .toString(),
+                                                    productServiceID.toString(),
                                                 'query_complaint':
                                                     quiryController.text,
                                                 'order_done': selectedOption,
@@ -1028,7 +1039,7 @@ class _RequestAdminState extends AdminController {
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
-                                              log("check body : " +
+                                              print("check body : " +
                                                   body.toString());
                                               var request =
                                                   http.MultipartRequest(
@@ -1036,8 +1047,9 @@ class _RequestAdminState extends AdminController {
                                                       Uri.parse(
                                                           get_visitsave_url));
                                               request.fields.addAll({
-                                                'user_id': '$userID',
-                                                "company_id": '$companyID',
+                                                'user_id': userid.toString(),
+                                                "company_id":
+                                                    usercompanyid.toString(),
                                                 'visit_at': 'vendor',
                                                 'vendor_id':
                                                     selectedVendorid.toString(),
@@ -1055,11 +1067,11 @@ class _RequestAdminState extends AdminController {
                                                     personMobileNoController
                                                         .text,
                                                 'product_service':
-                                                    productservice_id
-                                                        .toString(),
+                                                    productServiceID.toString(),
                                                 'query_complaint':
                                                     quiryController.text,
-                                                'order_done': '$selectedOption',
+                                                'order_done':
+                                                    selectedOption.toString(),
                                                 'next_visit': selectedDate !=
                                                         null
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
@@ -1071,7 +1083,7 @@ class _RequestAdminState extends AdminController {
                                               });
                                               request.files.add(
                                                   await http.MultipartFile
-                                                      .fromPath('personimage',
+                                                      .fromPath('person_image',
                                                           image!.path));
                                               // var result = await ApiBaseHelper()
                                               //     .postAPICall(url, body);
@@ -1079,8 +1091,9 @@ class _RequestAdminState extends AdminController {
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              log("postAPICall Enquiry response " +
-                                                  result.body.toString());
+                                              print(
+                                                  "postAPICall Enquiry response " +
+                                                      result.body.toString());
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -1088,10 +1101,12 @@ class _RequestAdminState extends AdminController {
                                               if (result.statusCode == 200) {
                                                 var responsedata =
                                                     jsonDecode(result.body);
-                                                log("Create Enquiry registration " +
-                                                    body.toString());
-                                                log("Create Enquiry registration " +
-                                                    result.body.toString());
+                                                print(
+                                                    "Create Enquiry registration " +
+                                                        body.toString());
+                                                print(
+                                                    "Create Enquiry registration " +
+                                                        result.body.toString());
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
                                                 toastMsg(
@@ -1100,8 +1115,13 @@ class _RequestAdminState extends AdminController {
                                               } else {
                                                 var responsedata =
                                                     jsonDecode(result.body);
-                                                GoRouter.of(context).goNamed(
-                                                    routerConst.homeNavBar);
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomeNavBar()
+                                                        //logIN==true?BottomBar() :LoginScreen()
+                                                        ));
                                                 toastMsg(
                                                     "${responsedata['message']}",
                                                     false);

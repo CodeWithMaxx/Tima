@@ -138,7 +138,9 @@ class HomeNavBarState extends State<HomeNavBar> {
   List<Widget> pageList = [
     const Home(),
     const Markattendance(),
-    RequestAdmin(),
+    RequestAdmin(
+      inquiryID: "0",
+    ),
     const Reportlist(),
   ];
 

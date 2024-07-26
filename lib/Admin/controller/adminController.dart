@@ -54,8 +54,8 @@ abstract class AdminController extends State<RequestAdmin> {
     });
 
     var url = Uri.parse(product_service_url);
-    var companyID =
-        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    String? companyID = await secureStorageService.getUserCompanyID(
+        key: StorageKeys.companyIdKey);
     var body = ({'type': 'product', "company_id": companyID, 'id': '0'});
     var result = await ApiBaseHelper().postAPICall(url, body);
     if (result.statusCode == 200) {
@@ -179,7 +179,7 @@ abstract class AdminController extends State<RequestAdmin> {
   File? image;
 
   Future<void> pickeImageByUser() async {
-    final pickedImage = await ImagePicker().pickImage(
+    var pickedImage = await ImagePicker().pickImage(
         source: ImageSource.camera,
         imageQuality: 50,
         maxWidth: 800,

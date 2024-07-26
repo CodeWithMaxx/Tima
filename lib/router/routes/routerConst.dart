@@ -25,4 +25,6 @@ class routerConst {
   static const String recivedInquiry = '/recivedInquiry';
   static const String nextVisitDemo = '/nextVisitdemo';
   static const String hiddenDrawer = '/drawer';
+  static const String globalNavBar = '/globaNavBar';
+  static const String homeForgotPass = '/homeforgotpass';
 }

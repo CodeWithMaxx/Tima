@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
-import 'package:tima_app/core/GWidgets/customButton.dart';
 import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
@@ -39,7 +38,6 @@ class _RegisterScreenState extends RegisterController {
   late LocationProvider locationProvider;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     locationProvider = LocationProvider();
     locationProvider.updateMap();
@@ -176,7 +174,7 @@ class _RegisterScreenState extends RegisterController {
         enableInteractiveSelection: false,
         // onTap: () async {
         // },
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
@@ -226,7 +224,7 @@ class _RegisterScreenState extends RegisterController {
         endController.add(endcontroller);
         emailcontrollers.add(emailcontroller);
         fields1.add(fiels1);
-        log("_field" + fields1.length.toString());
+        log("_field-->${fields1.length}");
         fields2.add(fiels2);
         fields3.add(fiels3);
         fields.add(field);
@@ -246,7 +244,7 @@ class _RegisterScreenState extends RegisterController {
           borderRadius: BorderRadius.circular(100.0),
           color: Colors.white,
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -274,7 +272,7 @@ class _RegisterScreenState extends RegisterController {
           // onTap: () async {
 
           // },
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
@@ -284,7 +282,7 @@ class _RegisterScreenState extends RegisterController {
           decoration: InputDecoration(
             hintText: "Contact Person",
             labelText: "Contact Person${startController.length + 1}",
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
             hintStyle: const TextStyle(
@@ -295,17 +293,17 @@ class _RegisterScreenState extends RegisterController {
               letterSpacing: 0.2,
             ),
             isDense: true,
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
               letterSpacing: 1.2,
             ),
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red),
             ),
-            focusedErrorBorder: OutlineInputBorder(
+            focusedErrorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
@@ -329,7 +327,7 @@ class _RegisterScreenState extends RegisterController {
           // onTap: () async {
 
           // },
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
@@ -340,7 +338,7 @@ class _RegisterScreenState extends RegisterController {
             hintText: "Contact Mobile",
             counterText: "",
             labelText: "Contact Mobile${endController.length + 1}",
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
             hintStyle: const TextStyle(
@@ -351,17 +349,17 @@ class _RegisterScreenState extends RegisterController {
               letterSpacing: 0.2,
             ),
             isDense: true,
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
               letterSpacing: 1.2,
             ),
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red),
             ),
-            focusedErrorBorder: OutlineInputBorder(
+            focusedErrorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
@@ -377,7 +375,7 @@ class _RegisterScreenState extends RegisterController {
         final fiels3 = TextFormField(
           cursorColor: Colors.grey,
           enableInteractiveSelection: false,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
@@ -387,7 +385,7 @@ class _RegisterScreenState extends RegisterController {
           decoration: InputDecoration(
             hintText: "Contact Email",
             labelText: "Contact Email${emailcontrollers.length + 1}",
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
             hintStyle: const TextStyle(
@@ -398,17 +396,17 @@ class _RegisterScreenState extends RegisterController {
               letterSpacing: 0.2,
             ),
             isDense: true,
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
               letterSpacing: 1.2,
             ),
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red),
             ),
-            focusedErrorBorder: OutlineInputBorder(
+            focusedErrorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
@@ -418,7 +416,7 @@ class _RegisterScreenState extends RegisterController {
         final field = TextField(
           controller: endcontroller,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             labelText: "name${emailcontrollers.length + 1}",
           ),
         );
@@ -442,18 +440,18 @@ class _RegisterScreenState extends RegisterController {
       itemCount: fields.length,
       // itemCount: 1,
       scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Container(
           // color: Colors.red,
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           child: Column(
             children: [
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    log("startController : " + index.toString());
+                    log("startController : $index");
                     startController.removeAt(index);
                     endController.removeAt(index);
                     emailcontrollers.removeAt(index);
@@ -467,7 +465,7 @@ class _RegisterScreenState extends RegisterController {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.delete_forever,
                         color: Colors.red,
@@ -481,11 +479,11 @@ class _RegisterScreenState extends RegisterController {
                 ),
               ),
               fields1[index],
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               fields2[index],
-              SizedBox(height: 15),
+              SizedBox(height: 15.h),
               fields3[index],
-              SizedBox(height: 15),
+              SizedBox(height: 15.h),
               // _fields[index],
             ],
           ),
@@ -602,8 +600,13 @@ class _RegisterScreenState extends RegisterController {
                         color: tfColor),
                     child: TextFormField(
                       controller: nameController,
-                      validator: form_validation.validatename,
-                      decoration: InputDecoration(
+                      validator: (value) {
+                        if (value == null || value == '') {
+                          return 'Please Enter Your Name';
+                        }
+                        return null; //changes
+                      },
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(CupertinoIcons.building_2_fill),
                         hintText: "Organization Name",
                         border: InputBorder.none,
@@ -649,7 +652,18 @@ class _RegisterScreenState extends RegisterController {
                         color: tfColor),
                     child: TextFormField(
                       controller: emailController,
-                      validator: form_validation.validateEmail,
+                      validator: (value) {
+                        Pattern pattern =
+                            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                            r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                            r"{0,253}[a-zA-Z0-9])?)*$";
+                        RegExp regex = RegExp(pattern.toString());
+                        if (!regex.hasMatch(value.toString()) ||
+                            value == null) {
+                          return 'Please Enter a Valid Email address ';
+                        }
+                        return null; //changes;
+                      },
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.email),
                         counterText: "",
@@ -665,7 +679,7 @@ class _RegisterScreenState extends RegisterController {
                           }
                         });
                       },
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -695,7 +709,15 @@ class _RegisterScreenState extends RegisterController {
                         color: tfColor),
                     child: TextFormField(
                       controller: mobileController,
-                      validator: form_validation.validatephonenumber,
+                      validator: (value) {
+                        RegExp regex = RegExp(r'^[6-9][0-9]{9}$');
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Your Phone Number';
+                        } else if (!regex.hasMatch(value)) {
+                          return 'Invalid Contact No';
+                        }
+                        return null;
+                      },
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.phone),
                         counterText: "",
@@ -713,8 +735,7 @@ class _RegisterScreenState extends RegisterController {
                       },
                       maxLength: 10,
                       keyboardType: TextInputType.number,
-                      style: TextStyle(
-                          fontFamily: 'Barlow',
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -740,8 +761,13 @@ class _RegisterScreenState extends RegisterController {
                         borderRadius: BorderRadius.circular(10),
                         color: tfColor),
                     child: DropdownButtonFormField(
-                      validator: form_validation.validatestate,
-                      decoration: InputDecoration(
+                      validator: (value) {
+                        if (value == null || value == '') {
+                          return 'Please Enter a Valid Name';
+                        }
+                        return null; //changes
+                      },
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         // focusedBorder: focusboarder,
                         // errorBorder: errorboarder,
@@ -758,7 +784,7 @@ class _RegisterScreenState extends RegisterController {
                           selcectState = value;
                           selectCity = null;
                         });
-                        log("selectedstateId--->" + selectedstateId.toString());
+                        log("selectedstateId--->$selectedstateId");
 
                         if (selectedstateId.isEmpty) {
                           selectedstateId = '';
@@ -774,8 +800,7 @@ class _RegisterScreenState extends RegisterController {
                           ),
                           onTap: () {
                             selectedstateId = explist['id'].toString();
-                            log("selectedstateId--->" +
-                                selectedstateId.toString());
+                            log("selectedstateId--->$selectedstateId");
                           },
                         );
                       }).toList(),
@@ -801,7 +826,12 @@ class _RegisterScreenState extends RegisterController {
                         borderRadius: BorderRadius.circular(10),
                         color: tfColor),
                     child: DropdownButtonFormField(
-                      validator: form_validation.validatecity,
+                      validator: (value) {
+                        if (value == null || value == '') {
+                          return 'Please Enter a Valid Name';
+                        }
+                        return null; //changes
+                      },
                       decoration: InputDecoration(
                         border: InputBorder.none,
 
@@ -871,7 +901,7 @@ class _RegisterScreenState extends RegisterController {
                       ),
                       maxLength: 10,
                       keyboardType: TextInputType.number,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -910,7 +940,7 @@ class _RegisterScreenState extends RegisterController {
                       ),
                       // maxLength: 10,
                       // keyboardType: TextInputType.number,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -963,7 +993,8 @@ class _RegisterScreenState extends RegisterController {
                       valueField: 'id',
                       okButtonLabel: 'OK',
                       cancelButtonLabel: 'CANCEL',
-                      hintWidget: Text('Please choose one or more Product'),
+                      hintWidget:
+                          const Text('Please choose one or more Product'),
                       initialValue: AllLanguageServices,
                       onSaved: (value) {
                         if (value == null) return;
@@ -1073,7 +1104,7 @@ class _RegisterScreenState extends RegisterController {
                       },
                       // maxLength: 10,
                       // keyboardType: TextInputType.number,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -1123,7 +1154,12 @@ class _RegisterScreenState extends RegisterController {
                     child: TextFormField(
                       readOnly: true,
                       controller: addressController,
-                      validator: form_validation.validateaddress,
+                      validator: (value) {
+                        if (value == null || value == '') {
+                          return 'Please Enter a Valid Name';
+                        }
+                        return null; //changes
+                      },
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.home),
                         counterText: "",
@@ -1282,46 +1318,57 @@ class _RegisterScreenState extends RegisterController {
                         }),
                       );
                       final fiels3 = TextFormField(
-                        cursorColor: Colors.grey,
-                        enableInteractiveSelection: false,
-                        onTap: () async {},
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.2,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: "Contact Email",
-                          labelText:
-                              "Contact Email${emailcontrollers.length + 1}",
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          hintStyle: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
+                          cursorColor: Colors.grey,
+                          enableInteractiveSelection: false,
+                          onTap: () async {},
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
                             letterSpacing: 0.2,
                           ),
-                          isDense: true,
-                          errorStyle: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: 1.2,
+                          decoration: InputDecoration(
+                            hintText: "Contact Email",
+                            labelText:
+                                "Contact Email${emailcontrollers.length + 1}",
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            hintStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.normal,
+                              letterSpacing: 0.2,
+                            ),
+                            isDense: true,
+                            errorStyle: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                              letterSpacing: 1.2,
+                            ),
+                            // errorBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.red),
+                            // ),
+                            // focusedErrorBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.grey),
+                            // ),
                           ),
-                          // errorBorder: OutlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.red),
-                          // ),
-                          // focusedErrorBorder: OutlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.grey),
-                          // ),
-                        ),
-                        controller: emailcontroller,
-                        validator: form_validation.validateEmail,
-                      );
+                          controller: emailcontroller,
+                          validator: (value) {
+                            Pattern pattern =
+                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                r"{0,253}[a-zA-Z0-9])?)*$";
+                            RegExp regex = RegExp(pattern.toString());
+                            if (!regex.hasMatch(value.toString()) ||
+                                value == null) {
+                              return 'Please Enter a Valid Email address ';
+                            }
+
+                            return value; //changes;
+                          });
                       final field = TextField(
                         controller: endcontroller,
                         decoration: InputDecoration(
@@ -1345,117 +1392,244 @@ class _RegisterScreenState extends RegisterController {
                   SizedBox(
                     height: 10.h,
                   ),
-                  appButton(
-                      onPressed: () async {
-                        ref.updateMap();
-                        // bool validemail;
-                        log("AllServices--> $AllServices");
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          ref.updateMap();
+                          bool validemail;
+                          print("-------" + AllServices.toString());
 
-                        try {
-                          if (registerkey.currentState!.validate()) {
-                            log("AllLanguageServices--> $AllLanguageServices");
+                          try {
+                            if (registerkey.currentState!.validate()) {
+                              print(
+                                  "--1-----" + AllLanguageServices.toString());
+                              // if(validemail==true){
+                              //
+                              // }else{
+                              //   Fluttertoast.showToast(msg: 'Please Enter a Valid Email address ');
+                              // }
 
-                            startController
-                                .where((element) => element.text != "")
-                                .fold("", (previousValue, element) {
-                              arrayList1.add(element.text);
-                              return '';
-                            });
-                            emailcontrollers
-                                .where((element) => element.text != "")
-                                .fold("", (previousValue, element) {
-                              arrayListmail.add(element.text);
-                              return '';
-                            });
-                            endController
-                                .where((element) => element.text != "")
-                                .fold("", (previousValue, element) {
-                              arrayListmobile.add(element.text);
-                              return '';
-                            });
-                            var url;
-                            if (selectedRadioTile == 1) {
-                              url = Uri.parse(client_reg_url.toString());
+                              startController
+                                  .where((element) => element.text != "")
+                                  .fold("", (previousValue, element) {
+                                arrayList1.add(element.text);
+                                return '';
+                              });
+                              emailcontrollers
+                                  .where((element) => element.text != "")
+                                  .fold("", (previousValue, element) {
+                                arrayListmail.add(element.text);
+                                return '';
+                              });
+                              endController
+                                  .where((element) => element.text != "")
+                                  .fold("", (previousValue, element) {
+                                arrayListmobile.add(element.text);
+                                return '';
+                              });
+                              var url;
+                              if (selectedRadioTile == 1) {
+                                url = Uri.parse(client_reg_url.toString());
+                              } else {
+                                url = Uri.parse(vender_reg_url.toString());
+                              }
+                              String? usercompanyid =
+                                  await _secureStorageService.getUserCompanyID(
+                                      key: StorageKeys.companyIdKey);
+
+                              String? userid = await _secureStorageService
+                                  .getUserID(key: StorageKeys.userIDKey);
+                              var body = ({
+                                "company_id": usercompanyid,
+                                'user_id': userid,
+                                "org_name": nameController.text,
+                                "address": addressController.text,
+                                "city": selectCityID,
+                                "pin": pinController.text,
+                                "state": selectedstateId,
+                                "contact_no": "8852911910",
+                                "mobile": mobileController.text,
+                                "web": webController.text,
+                                "email": emailController.text,
+                                "inq_id": widget.inquryID,
+                                "location": "${ref.lat.value},${ref.lng.value}",
+                                'products':
+                                    '${AllLanguageServices.length == 0 ? "" : jsonEncode(AllLanguageServices)}',
+                                'services':
+                                    '${AllServices.length == 0 ? "" : jsonEncode(AllServices)}',
+                                'contact_person': '${jsonEncode(arrayList1)}',
+                                'contact_mobile':
+                                    '${jsonEncode(arrayListmobile)}',
+                                'contact_email': '${jsonEncode(arrayListmail)}'
+                              });
+                              print("boss-----" +
+                                  jsonEncode(arrayList1).toString());
+                              print("boss-----" +
+                                  jsonEncode(arrayListmail).toString());
+                              print("boss-----" +
+                                  jsonEncode(arrayListmobile).toString());
+                              print("client registration " + body.toString());
+                              var result =
+                                  await ApiBaseHelper().postAPICall(url, body);
+                              if (result.statusCode == 200) {
+                                var responsedata = jsonDecode(result.body);
+
+                                print("client registration " +
+                                    result.body.toString());
+                                Fluttertoast.showToast(
+                                    msg: responsedata['message']);
+                                nameController.clear();
+                                emailController.clear();
+                                mobileController.clear();
+                                pinController.clear();
+                                webController.clear();
+                                addressController.clear();
+                                startController.clear();
+                                endController.clear();
+                                emailcontrollers.clear();
+                                fields1.clear();
+                                fields2.clear();
+                                fields3.clear();
+                                timefields1.clear();
+                                timefields2.clear();
+                                fields.clear();
+                                GoRouter.of(context)
+                                    .goNamed(routerConst.homeNavBar);
+                              }
+                              // Registration();
+                              // if(registerkey.currentState.validate()){
+                              //
+                              // }
                             } else {
-                              url = Uri.parse(vender_reg_url.toString());
+                              print("ok not");
                             }
-                            String? companyID =
-                                await _secureStorageService.getUserCompanyID(
-                                    key: StorageKeys.companyIdKey);
-
-                            var userID = await _secureStorageService.getUserID(
-                                key: StorageKeys.userIDKey);
-                            var body = ({
-                              "company_id": companyID,
-                              'user_id': userID,
-                              "org_name": nameController.text,
-                              "address": addressController.text,
-                              "city": selectCityID,
-                              "pin": pinController.text,
-                              "state": selectedstateId,
-                              "contact_no": "8852911910",
-                              "mobile": mobileController.text,
-                              "web": webController.text,
-                              "email": emailController.text,
-                              "inq_id": widget.inquryID,
-                              "location": "${ref.lat.value},${ref.lng.value}",
-                              'products':
-                                  '${AllLanguageServices.length == 0 ? "" : jsonEncode(AllLanguageServices)}',
-                              'services':
-                                  '${AllServices.length == 0 ? "" : jsonEncode(AllServices)}',
-                              'contact_person': '${jsonEncode(arrayList1)}',
-                              'contact_mobile':
-                                  '${jsonEncode(arrayListmobile)}',
-                              'contact_email': '${jsonEncode(arrayListmail)}'
-                            });
-                            log("boss-----" +
-                                jsonEncode(arrayList1).toString());
-                            log("boss-----" +
-                                jsonEncode(arrayListmail).toString());
-                            log("boss-----" +
-                                jsonEncode(arrayListmobile).toString());
-                            log("client registration " + body.toString());
-                            var result =
-                                await ApiBaseHelper().postAPICall(url, body);
-                            if (result.statusCode == 200) {
-                              var responsedata = jsonDecode(result.body);
-
-                              log("client registration " +
-                                  result.body.toString());
-                              Fluttertoast.showToast(
-                                  msg: responsedata['message']);
-                              nameController.clear();
-                              emailController.clear();
-                              mobileController.clear();
-                              pinController.clear();
-                              webController.clear();
-                              addressController.clear();
-                              startController.clear();
-                              endController.clear();
-                              emailcontrollers.clear();
-                              fields1.clear();
-                              fields2.clear();
-                              fields3.clear();
-                              timefields1.clear();
-                              timefields2.clear();
-                              fields.clear();
-                              GoRouter.of(context)
-                                  .pushNamed(routerConst.homeNavBar);
-                            }
-                            // Registration();
-                            // if(registerkey.currentState.validate()){
-                            //
-                            // }
-                          } else {
-                            log("ok not");
+                          } catch (e) {
+                            print("exception : " + e.toString());
                           }
-                        } catch (e) {
-                          log("exception : $e");
-                        }
-                      },
-                      text: 'Submit',
-                      height: 50,
-                      width: double.infinity),
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            backgroundColor: blueColor),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 17,
+                              color: Colors.white),
+                        )),
+                  ),
+                  // appButton(
+                  //     onPressed: () async {
+                  //       var url;
+                  //       ref.updateMap();
+                  //       // bool validemail;
+                  //       log("AllServices--> $AllServices");
+
+                  //       try {
+                  //         if (registerkey.currentState!.validate()) {
+                  //           log("AllLanguageServices--> $AllLanguageServices");
+
+                  //           startController
+                  //               .where((element) => element.text != "")
+                  //               .fold("", (previousValue, element) {
+                  //             arrayList1.add(element.text);
+                  //             return '';
+                  //           });
+                  //           emailcontrollers
+                  //               .where((element) => element.text != "")
+                  //               .fold("", (previousValue, element) {
+                  //             arrayListmail.add(element.text);
+                  //             return '';
+                  //           });
+                  //           endController
+                  //               .where((element) => element.text != "")
+                  //               .fold("", (previousValue, element) {
+                  //             arrayListmobile.add(element.text);
+                  //             return '';
+                  //           });
+                  //           if (selectedRadioTile == 1) {
+                  //             url = Uri.parse(client_reg_url);
+                  //           } else {
+                  //             url = Uri.parse(vender_reg_url);
+                  //           }
+                  //           String? companyID =
+                  //               await _secureStorageService.getUserCompanyID(
+                  //                   key: StorageKeys.companyIdKey);
+
+                  //           String? userID = await _secureStorageService
+                  //               .getUserID(key: StorageKeys.userIDKey);
+                  //           var body = jsonEncode({
+                  //             "company_id": companyID,
+                  //             'user_id': userID,
+                  //             "org_name": nameController.text,
+                  //             "address": addressController.text,
+                  //             "city": selectCityID,
+                  //             "pin": pinController.text,
+                  //             "state": selectedstateId,
+                  //             "contact_no": "8852911910",
+                  //             "mobile": mobileController.text,
+                  //             "web": webController.text,
+                  //             "email": emailController.text,
+                  //             "inq_id": widget.inquryID,
+                  //             "location": "${ref.lat.value},${ref.lng.value}",
+                  //             'products': AllLanguageServices.isEmpty
+                  //                 ? ""
+                  //                 : jsonEncode(AllLanguageServices),
+                  //             'services':
+                  //                 '${AllServices.length == 0 ? "" : jsonEncode(AllServices)}',
+                  //             'contact_person': jsonEncode(arrayList1),
+                  //             'contact_mobile': jsonEncode(arrayListmobile),
+                  //             'contact_email': jsonEncode(arrayListmail)
+                  //           });
+                  //           log("boss--> ${jsonEncode(arrayList1)}");
+                  //           log("boss--> ${jsonEncode(arrayListmail)}");
+                  //           log("boss-->${jsonEncode(arrayListmobile)}");
+                  //           log("client registration=> $body");
+                  //           var result =
+                  //               await ApiBaseHelper().postAPICall(url, body);
+                  //           if (result.statusCode == 200) {
+                  //             var responsedata = jsonDecode(result.body);
+
+                  //             log("client registration => ${result.body}");
+                  //             Fluttertoast.showToast(
+                  //                 msg: responsedata['message']);
+                  //             // nameController.clear();
+                  //             // emailController.clear();
+                  //             // mobileController.clear();
+                  //             // pinController.clear();
+                  //             // webController.clear();
+                  //             // addressController.clear();
+                  //             // startController.clear();
+                  //             // endController.clear();
+                  //             // emailcontrollers.clear();
+                  //             // fields1.clear();
+                  //             // fields2.clear();
+                  //             // fields3.clear();
+                  //             // timefields1.clear();
+                  //             // timefields2.clear();
+                  //             // fields.clear();
+                  //             GoRouter.of(context)
+                  //                 .pushNamed(routerConst.homeNavBar);
+                  //           }
+
+                  //           // Registration();
+                  //           // if(registerkey.currentState.validate()){
+                  //           //
+                  //           // }
+                  //         } else {
+                  //           log("ok not");
+                  //         }
+                  //       } catch (e) {
+                  //         log("exception : $e");
+                  //       }
+                  //     },
+                  //     text: 'Submit',
+                  //     height: 50,
+                  //     width: double.infinity),
                   //     child:  CustomRichText(text: "Already Have An Account ?",text2: "Login",)),
                   SizedBox(
                     height: 15,

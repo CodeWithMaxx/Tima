@@ -22,16 +22,6 @@ abstract class ForgotPasswordController extends State<ForgotPasswordScreen> {
   final newPassController = TextEditingController();
   final rePassController = TextEditingController();
 
-  userAppLoginStatus() async {
-    isLoggedIn =
-        await _secureStorageService.getUserData(key: StorageKeys.loginKey);
-    if (isLoggedIn != null) {
-      GoRouter.of(context).goNamed(routerConst.homeNavBar);
-    } else {
-      GoRouter.of(context).goNamed(routerConst.loginScreen);
-    }
-  }
-
   Future<void> resetUserPassword() async {
     String? userId =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);

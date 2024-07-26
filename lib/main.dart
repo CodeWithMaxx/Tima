@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tima_app/feature/NavBar/report/provider/reportProvder.dart';
+import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/provider/generateInqProvider.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/providers/inquireyProvider/inquiry_provider.dart';
 import 'package:tima_app/router/routes/routerConfig.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => LocationProvider()),
           ChangeNotifierProvider(create: (_) => InquiryProvider()),
           ChangeNotifierProvider(create: (_) => ReportProvider()),
+          ChangeNotifierProvider(create: (_) => EnquiryProvider()),
         ],
         child: MaterialApp.router(
           theme: ThemeData(

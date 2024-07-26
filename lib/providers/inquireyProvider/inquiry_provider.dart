@@ -13,7 +13,7 @@ class InquiryProvider with ChangeNotifier {
   GetEnquiryDetailModel enquirydetail = GetEnquiryDetailModel(data: []);
   List enquirydetailList = [];
   var enquiryvisiDetail = GetEnquiryViewDetailModel();
-  GeneratedInquiryModel generatedInquiryModel = GeneratedInquiryModel();
+
   List dataList = [];
   var inquirydetail = GetEnquiryDetailViewModel();
   bool enquiryvisitdetailload = false;
@@ -26,6 +26,9 @@ class InquiryProvider with ChangeNotifier {
   String endDateController = "";
   String startgeneratedDateController = "";
   String endgeneratedDateController = "";
+  List<EnquiryData> enquiryList = [];
+
+  List<dynamic> responseList = [];
 
   Future<void> getenquiryapi(String url, dynamic body) async {
     enquirydetailload = true;
@@ -103,26 +106,38 @@ class InquiryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getgenerateEnquiryapi(String url, dynamic body) async {
+  Future<void> getGenerateEnquiryApi(String url, dynamic body) async {
     generateenquiryload = true;
     notifyListeners();
 
-    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+    try {
+      var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
 
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      log("client getgenerateEnquiryapi body: $body ");
-      log("client getgenerateEnquiryapi response: ${result.body}");
-      var data = GeneratedInquiryModel.fromJson(responsedata);
-      generatedInquiryModel = data;
-      dataList.add(responsedata['data']);
-      notifyListeners();
-      // log("client getgenerateEnquiryapi response length " +
-      //     generatedInquiryModel.data!.length.toString());
-      Fluttertoast.showToast(msg: responsedata['message']);
+      if (result.statusCode == 200) {
+        var responseData = jsonDecode(result.body);
+        print("client getGenerateEnquiryApi body: $body");
+        print("client getGenerateEnquiryApi response: ${result.body}");
+
+        GenerateEnquiryModel generatedInqModel =
+            GenerateEnquiryModel.fromJson(responseData);
+        Fluttertoast.showToast(msg: responseData['message']);
+        generateenquiryload = false;
+
+        enquiryList = generatedInqModel.data; // Store the list of EnquiryData
+        notifyListeners();
+      } else {
+        _handleError(result.statusCode, result.body);
+      }
+    } catch (e) {
+      print("Error in getGenerateEnquiryApi: $e");
+      Fluttertoast.showToast(msg: "An error occurred. Please try again.");
     }
+  }
 
-    generateenquiryload = false;
-    notifyListeners();
+  void _handleError(int statusCode, String responseBody) {
+    print(
+        "Error in getGenerateEnquiryApi - Status Code: $statusCode, Response: $responseBody");
+    Fluttertoast.showToast(
+        msg: "Failed to load data. Status Code: $statusCode");
   }
 }

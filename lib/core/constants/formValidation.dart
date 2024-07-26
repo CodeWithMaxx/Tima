@@ -1,6 +1,6 @@
 class form_validation {
   // !phone number validation
-  static String validatephonenumber(value) {
+  validatephonenumber(value) {
     RegExp regex = RegExp(r'^[6-9][0-9]{9}$');
     if (value.isEmpty) {
       return 'Please Enter Your Phone Number';
@@ -9,7 +9,6 @@ class form_validation {
     } else if (value.length != 10) {
       return 'Phone Number is not valid';
     }
-    return value; //changes
   }
 
   // !phone number validation

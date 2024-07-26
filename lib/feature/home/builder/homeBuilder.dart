@@ -162,7 +162,7 @@ abstract class HomeBuilder extends State<Home> {
               ),
             ),
             ListTile(
-              onTap: () => context.pushNamed(routerConst.forgotPage),
+              onTap: () => context.pushNamed(routerConst.homeForgotPass),
               leading: const Icon(Icons.password),
               title: const Text(
                 "Forgot Password",
@@ -170,7 +170,7 @@ abstract class HomeBuilder extends State<Home> {
               ),
             ),
             ListTile(
-              onTap: () => context.pushNamed(routerConst.register),
+              onTap: () => context.pushNamed(routerConst.register, extra: '0'),
               leading: const Icon(Icons.person),
               title: const Text(
                 "Registration",
