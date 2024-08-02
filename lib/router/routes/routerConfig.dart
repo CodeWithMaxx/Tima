@@ -31,15 +31,6 @@ class routerConfigue {
       },
     ),
 
-    // ! register screen
-    GoRoute(
-      path: routerConst.registerScreen,
-      name: routerConst.registerScreen,
-      builder: (context, state) {
-        return RegisterScreen();
-      },
-    ),
-
     // !loginScreem Inquiry page
     GoRoute(
       path: routerConst.createInquiryPage,
@@ -111,7 +102,9 @@ class routerConfigue {
       name: routerConst.register,
       builder: (context, state) {
         String inquiryID = state.extra as String;
-        return RegisterScreen();
+        return RegisterScreen(
+          inquryID: inquiryID,
+        );
       },
     ),
 

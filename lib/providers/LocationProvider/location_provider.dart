@@ -10,16 +10,16 @@ import 'package:tima_app/core/helper/permissionToUser.dart';
 
 class LocationProvider extends ChangeNotifier with WidgetsBindingObserver {
   final SecureStorageService _secureStorageService = SecureStorageService();
+  Timer? timer;
   Position? initialPosition;
   final lat = ValueNotifier<double>(0.0);
   final lng = ValueNotifier<double>(0.0);
   final address = ValueNotifier<String>('Getting Address..');
-  Timer? _timer;
 
   LocationProvider() {
     WidgetsBinding.instance.addObserver(this);
     initLocation();
-    startTimer();
+    liveLocationShooter();
   }
 
   void initLocation() async {
@@ -31,9 +31,9 @@ class LocationProvider extends ChangeNotifier with WidgetsBindingObserver {
     });
   }
 
-  void startTimer() async {
-    final userId = _secureStorageService.getUserData(key: 'userId');
-    _timer = Timer.periodic(const Duration(minutes: 5), (timer) async {
+  Future<void> liveLocationShooter() async {
+    String? userId = await _secureStorageService.getUserData(key: 'userId');
+    timer = Timer.periodic(const Duration(minutes: 15), (timer) async {
       var url = Uri.parse(updatecurrent_location_url);
       updateMap();
       var body = {
@@ -72,7 +72,7 @@ class LocationProvider extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   void stopTimer() {
-    _timer?.cancel();
+    timer?.cancel();
   }
 
   @override

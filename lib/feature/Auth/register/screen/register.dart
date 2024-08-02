@@ -24,7 +24,8 @@ import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  var inquryID;
+  RegisterScreen({super.key, this.inquryID});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -1436,8 +1437,8 @@ class _RegisterScreenState extends RegisterController {
                                 "mobile": mobileController.text,
                                 "web": webController.text,
                                 "email": emailController.text,
-                                "inq_id": '0',
-                                "location": "${ref.lat.value},${ref.lng.value}",
+                                "inq_id": widget.inquryID,
+                                "location": locationController.text,
                                 'products':
                                     '${AllLanguageServices.length == 0 ? "" : jsonEncode(AllLanguageServices)}',
                                 'services':
@@ -1476,7 +1477,6 @@ class _RegisterScreenState extends RegisterController {
                                 fields.clear();
                                 GoRouter.of(context)
                                     .goNamed(routerConst.homeNavBar);
-                                GoRouter.of(context).pop();
                               }
                               // Registration();
                               // if(registerkey.currentState.validate()){

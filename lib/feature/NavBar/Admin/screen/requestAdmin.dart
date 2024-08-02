@@ -10,7 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tima_app/feature/NavBar/Admin/controller/adminController.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
@@ -18,12 +17,12 @@ import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
 import 'package:tima_app/core/constants/textconst.dart';
-import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
+import 'package:tima_app/feature/NavBar/Admin/controller/adminController.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
 class RequestAdmin extends StatefulWidget {
- const RequestAdmin({super.key});
+  const RequestAdmin({super.key});
 
   @override
   State<RequestAdmin> createState() => _RequestAdminState();
@@ -924,8 +923,7 @@ class _RequestAdminState extends AdminController {
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              log(
-                                                  "postAPICall Enquiry response==> ${result.body} ");
+                                              log("postAPICall Enquiry response==> ${result.body} ");
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -934,10 +932,8 @@ class _RequestAdminState extends AdminController {
                                                     jsonDecode(result.body);
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
-                                                log(
-                                                    "Create Enquiry registration ==>$body");
-                                                log(
-                                                    "Create Enquiry registration==> ${result.body} ");
+                                                log("Create Enquiry registration ==>$body");
+                                                log("Create Enquiry registration==> ${result.body} ");
                                                 toastMsg(
                                                     "${responsedata['message']}",
                                                     false);
@@ -1083,8 +1079,7 @@ class _RequestAdminState extends AdminController {
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              log(
-                                                  "postAPICall Enquiry response ==> ${result.body}");
+                                              log("postAPICall Enquiry response ==> ${result.body}");
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -1092,10 +1087,8 @@ class _RequestAdminState extends AdminController {
                                               if (result.statusCode == 200) {
                                                 var responsedata =
                                                     jsonDecode(result.body);
-                                                log(
-                                                    "Create Enquiry registration ==>$body");
-                                                log(
-                                                    "Create Enquiry registration ==> ${result.body}");
+                                                log("Create Enquiry registration ==>$body");
+                                                log("Create Enquiry registration ==> ${result.body}");
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
                                                 toastMsg(
@@ -1104,13 +1097,9 @@ class _RequestAdminState extends AdminController {
                                               } else {
                                                 var responsedata =
                                                     jsonDecode(result.body);
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            HomeNavBar()
-                                                        //logIN==true?BottomBar() :LoginScreen()
-                                                        ));
+                                                GoRouter.of(context).goNamed(
+                                                    routerConst.homeNavBar);
+
                                                 toastMsg(
                                                     "${responsedata['message']}",
                                                     false);

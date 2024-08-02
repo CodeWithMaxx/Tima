@@ -11,11 +11,7 @@ import 'package:tima_app/router/routes/routerConfig.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => LocationProvider()),
-    ChangeNotifierProvider(create: (_) => InquiryProvider()),
-    // ChangeNotifierProvider(create: (_) => EnquiryProvider()),
-  ], child: MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -26,15 +22,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       // * dependency injection for mulitblocproviders
-      child: MaterialApp.router(
-        theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                backgroundColor: Colors.transparent, elevation: 0)),
-        debugShowCheckedModeBanner: false,
-        routerConfig: routerConfigue().pageRouter,
-        builder: FToastBuilder(),
-        key: navigatorKey,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LocationProvider()),
+          ChangeNotifierProvider(create: (_) => InquiryProvider()),
+        ],
+        child: MaterialApp.router(
+          theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                  backgroundColor: Colors.transparent, elevation: 0)),
+          debugShowCheckedModeBanner: false,
+          routerConfig: routerConfigue().pageRouter,
+          builder: FToastBuilder(),
+          key: navigatorKey,
+        ),
       ),
     );
   }

@@ -22,12 +22,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with WidgetsBindingObserver {
   final SecureStorageService _secureStorageService = SecureStorageService();
-  dynamic isLoggedIn;
+  bool isLoggedIn = false;
+
   late var userID;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // isLoggedIn ? _locationProvider.liveLocationShooter() : null;
     injectUserIDs();
     checkLoginStatus();
     // userAppLoginStatus();
@@ -80,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool(StorageKeys.loginKey) ?? false;
+    isLoggedIn = prefs.getBool(StorageKeys.loginKey) ?? false;
 
     Timer(const Duration(seconds: 3), () {
       if (isLoggedIn) {
@@ -90,26 +92,6 @@ class _SplashScreenState extends State<SplashScreen>
       }
     });
   }
-
-  // userAppLoginStatus() async {
-  //   isLoggedIn =
-  //       await _secureStorageService.getUserData(key: StorageKeys.loginKey);
-  //   if (isLoggedIn != null) {
-  //     setState(() {
-  //       isLoggedIn = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       isLoggedIn = false;
-  //     });
-  //   }
-
-  //   Timer(
-  //       const Duration(seconds: 2),
-  //       () => isLoggedIn
-  //           ? GoRouter.of(context).goNamed(routerConst.homeNavBar)
-  //           : GoRouter.of(context).goNamed(routerConst.loginScreen));
-  // }
 
   injectUserIDs() async {
     setState(() {
@@ -123,6 +105,12 @@ class _SplashScreenState extends State<SplashScreen>
       _secureStorageService.getCategoryName(key: StorageKeys.categoryNameKey);
       _secureStorageService.getUserLogInToken(key: true);
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

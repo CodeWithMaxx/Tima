@@ -36,11 +36,11 @@ abstract class HomeBuilder extends State<Home> {
 
   bool isLoading = true;
 
-  loadData() {
-    Future.delayed(
-      const Duration(seconds: 2),
-    );
-  }
+  // loadData() {
+  //   Future.delayed(
+  //     const Duration(seconds: 2),
+  //   );
+  // }
 
   int current = 0; // Current index of the carousel
   final CarouselController controller = CarouselController();
@@ -169,7 +169,7 @@ abstract class HomeBuilder extends State<Home> {
               ),
             ),
             ListTile(
-              onTap: () => context.pushNamed(routerConst.register),
+              onTap: () => context.pushNamed(routerConst.register, extra: '0'),
               leading: const Icon(Icons.person),
               title: const Text(
                 "Registration",

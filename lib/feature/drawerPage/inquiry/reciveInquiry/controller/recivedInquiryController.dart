@@ -197,7 +197,9 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
                       },
                     ),
                     TextButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
                         child: lebelText(
                             labelText: 'Back', size: 17, color: blueColor)),
                   ],

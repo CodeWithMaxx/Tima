@@ -1,4 +1,5 @@
 // ignore_for_file: unused_label
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:tima_app/core/constants/colorConst.dart';
 import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/feature/LogOut/logout.dart';
 import 'package:tima_app/feature/home/builder/homeBuilder.dart';
+import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,13 +17,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends HomeBuilder with WidgetsBindingObserver {
+  final LocationProvider _locationProvider = LocationProvider();
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     callHomeBannerFromApi();
+    _locationProvider.liveLocationShooter();
     usreInit();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

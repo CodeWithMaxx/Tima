@@ -142,10 +142,10 @@ class _HomeMapLocationState extends State<HomeMapLocation> {
                               false;
                           if (isUpdateLoc != true) {
                             ref.updateMap();
-                            var userID = _secureStorageService.getUserID(
-                                key: StorageKeys.userIDKey);
+                            String? userID = await _secureStorageService
+                                .getUserID(key: StorageKeys.userIDKey);
                             var url = Uri.parse(updatehome_location_url);
-                            var body = ({
+                            var body = jsonEncode({
                               'user_id': userID,
                               'location': '${ref.lat.value},${ref.lng.value}'
                             });

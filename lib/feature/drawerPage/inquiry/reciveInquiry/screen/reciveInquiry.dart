@@ -408,105 +408,99 @@ class _ReciveInquiryState extends RecivedInquiryController {
                                                       getEnqList[index]
                                                               .vendorId ==
                                                           null
-                                                  ? SizedBox(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                GoRouter.of(context).pushNamed(
-                                                                    routerConst
-                                                                        .registerScreen,
-                                                                    extra: getEnqList[
-                                                                            index]
-                                                                        .id);
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
-                                                                  color: const Color
-                                                                      .fromARGB(
-                                                                      255,
-                                                                      94,
-                                                                      113,
-                                                                      94),
-                                                                ),
-                                                                height: 40,
-                                                                width:
-                                                                    size.width /
-                                                                        3,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child:
-                                                                    const Text(
-                                                                  "Map Client",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      letterSpacing:
-                                                                          0.8),
-                                                                ),
-                                                              )),
-                                                          SizedBox(
-                                                            width: 10.w,
-                                                          ),
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                showRejectDialogBoxWidget(
-                                                                    getEnqList[
-                                                                            index]
-                                                                        .id);
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
-                                                                  color: Colors
-                                                                      .red,
-                                                                ),
-                                                                height: 40,
-                                                                width:
-                                                                    size.width /
-                                                                        3,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child:
-                                                                    const Text(
-                                                                  "Reject",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      letterSpacing:
-                                                                          0.8),
-                                                                ),
-                                                              )),
-                                                        ],
-                                                      ),
+                                                  ? Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        GestureDetector(
+                                                            onTap: () {
+                                                              GoRouter.of(context).pushNamed(
+                                                                  routerConst
+                                                                      .register,
+                                                                  extra: getEnqList[
+                                                                          index]
+                                                                      .id);
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                color: const Color
+                                                                    .fromARGB(
+                                                                    255,
+                                                                    94,
+                                                                    113,
+                                                                    94),
+                                                              ),
+                                                              height: 40,
+                                                              width:
+                                                                  size.width /
+                                                                      3,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: const Text(
+                                                                "Map Client",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    letterSpacing:
+                                                                        0.8),
+                                                              ),
+                                                            )),
+                                                        SizedBox(
+                                                          width: 10.w,
+                                                        ),
+                                                        GestureDetector(
+                                                            onTap: () {
+                                                              showRejectDialogBoxWidget(
+                                                                  getEnqList[
+                                                                          index]
+                                                                      .id);
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                              height: 40,
+                                                              width:
+                                                                  size.width /
+                                                                      3,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: const Text(
+                                                                "Reject",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    letterSpacing:
+                                                                        0.8),
+                                                              ),
+                                                            )),
+                                                      ],
                                                     )
                                                   : Container(),
                                           getEnqList[index].opStatus == "closed"
