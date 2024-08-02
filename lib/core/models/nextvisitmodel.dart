@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final nextVisitModel = nextVisitModelFromJson(jsonString);
+
 import 'dart:convert';
 
 NextVisitModel nextVisitModelFromJson(String str) =>
@@ -6,70 +10,66 @@ NextVisitModel nextVisitModelFromJson(String str) =>
 String nextVisitModelToJson(NextVisitModel data) => json.encode(data.toJson());
 
 class NextVisitModel {
-  int? status;
-  dynamic message;
-  List<Datum>? data;
+  int status;
+  String message;
+  List<Datum> data;
 
   NextVisitModel({
-    this.status,
-    this.message,
-    this.data,
+    required this.status,
+    required this.message,
+    required this.data,
   });
 
   factory NextVisitModel.fromJson(Map<String, dynamic> json) => NextVisitModel(
         status: json["status"],
         message: json["message"],
-        data: json["data"] != null
-            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
-            : null,
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data != null
-            ? List<dynamic>.from(data!.map((x) => x.toJson()))
-            : null,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
 class Datum {
-  var id;
-  var userId;
-  var visitAt;
-  var client;
+  String id;
+  String userId;
+  String visitAt;
+  String client;
   dynamic vendor;
-  DateTime? startAt;
-  DateTime? endAt;
-  var personName;
-  var personDesi;
-  var personMobile;
-  var personImage;
-  var productService;
-  var queryComplaint;
-  var orderDone;
-  DateTime? nextVisit;
-  var remark;
-  var location;
+  DateTime startAt;
+  DateTime endAt;
+  String personName;
+  String personDesi;
+  String personMobile;
+  String personImage;
+  String productService;
+  String queryComplaint;
+  String orderDone;
+  DateTime nextVisit;
+  String remark;
+  String location;
 
   Datum({
-    this.id,
-    this.userId,
-    this.visitAt,
-    this.client,
-    this.vendor,
-    this.startAt,
-    this.endAt,
-    this.personName,
-    this.personDesi,
-    this.personMobile,
-    this.personImage,
-    this.productService,
-    this.queryComplaint,
-    this.orderDone,
-    this.nextVisit,
-    this.remark,
-    this.location,
+    required this.id,
+    required this.userId,
+    required this.visitAt,
+    required this.client,
+    required this.vendor,
+    required this.startAt,
+    required this.endAt,
+    required this.personName,
+    required this.personDesi,
+    required this.personMobile,
+    required this.personImage,
+    required this.productService,
+    required this.queryComplaint,
+    required this.orderDone,
+    required this.nextVisit,
+    required this.remark,
+    required this.location,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -78,9 +78,8 @@ class Datum {
         visitAt: json["visit_at"],
         client: json["client"],
         vendor: json["vendor"],
-        startAt:
-            json["start_at"] != null ? DateTime.parse(json["start_at"]) : null,
-        endAt: json["end_at"] != null ? DateTime.parse(json["end_at"]) : null,
+        startAt: DateTime.parse(json["start_at"]),
+        endAt: DateTime.parse(json["end_at"]),
         personName: json["person_name"],
         personDesi: json["person_desi"],
         personMobile: json["person_mobile"],
@@ -88,9 +87,7 @@ class Datum {
         productService: json["product_service"],
         queryComplaint: json["query_complaint"],
         orderDone: json["order_done"],
-        nextVisit: json["next_visit"] != null
-            ? DateTime.parse(json["next_visit"])
-            : null,
+        nextVisit: DateTime.parse(json["next_visit"]),
         remark: json["remark"],
         location: json["location"],
       );
@@ -101,8 +98,8 @@ class Datum {
         "visit_at": visitAt,
         "client": client,
         "vendor": vendor,
-        "start_at": startAt?.toIso8601String(),
-        "end_at": endAt?.toIso8601String(),
+        "start_at": startAt.toIso8601String(),
+        "end_at": endAt.toIso8601String(),
         "person_name": personName,
         "person_desi": personDesi,
         "person_mobile": personMobile,
@@ -110,7 +107,7 @@ class Datum {
         "product_service": productService,
         "query_complaint": queryComplaint,
         "order_done": orderDone,
-        "next_visit": nextVisit?.toIso8601String(),
+        "next_visit": nextVisit.toIso8601String(),
         "remark": remark,
         "location": location,
       };

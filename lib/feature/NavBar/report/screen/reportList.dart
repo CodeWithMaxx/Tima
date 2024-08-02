@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/feature/NavBar/report/builder/reportBuilder.dart';
-import 'package:tima_app/feature/NavBar/report/provider/reportProvder.dart';
 
 class Reportlist extends StatefulWidget {
   const Reportlist({super.key});
@@ -37,14 +36,7 @@ class _ReportlistState extends ReportScreenBuilder {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            'Report List',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontFamily: 'Comfortaa',
-                fontWeight: FontWeight.bold),
-          ),
+          title: txtHelper().heading1Text('REPORT LIST', 21, blueColor),
           bottom: const TabBar(
             labelStyle: TextStyle(
               color: Colors.black, // Custom tab text color
@@ -103,9 +95,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectStartDate(context);
-                            setState(() {
-                              isShowNxtVisitStartLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -117,9 +106,7 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowNxtVisitStartLabel
-                                  ? 'Start Date'
-                                  : controller.startDateController.toString(),
+                              startDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
@@ -148,9 +135,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectEndDate(context);
-                            setState(() {
-                              isShowNxtVisitEndLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -162,12 +146,11 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowNxtVisitEndLabel
-                                  ? 'End Date'
-                                  : controller.endDateController.toString(),
+                              endDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
+                                fontFamily: 'Open Sans',
                                 letterSpacing: 0.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -180,38 +163,38 @@ class _ReportlistState extends ReportScreenBuilder {
                   SizedBox(
                     height: 15.h,
                   ),
-                  Consumer<ReportProvider>(builder: (_, provider, __) {
-                    if (provider.nextVisitLoad) {
-                      return const CircularProgressIndicator();
-                    } else {
-                      return Expanded(
-                        child: provider.nextVisitDataList.isEmpty
-                            ? Text(
-                                provider.nextVisitMessage.toString(),
-                                style: const TextStyle(color: blueColor),
-                              )
-                            : ListView.builder(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: provider.nextVisitDataList.length,
-                                itemBuilder: (context, index) {
-                                  var inquiryDetails =
-                                      provider.nextVisitDataList[index];
+                  nextVisitLoad
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : Expanded(
+                          child: nextVisitDataList.isEmpty
+                              ? Text(nextVisitMessage,
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: blueColor))
+                              : ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: nextVisitDataList.length,
+                                  itemBuilder: (context, index) {
+                                    var inquiryDetails =
+                                        nextVisitDataList[index];
 
-                                  return Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Stack(
-                                      children: [
-                                        Card(
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: SizedBox(
+                                    return Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Stack(
+                                        children: [
+                                          Container(
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: tfColor),
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
@@ -226,7 +209,7 @@ class _ReportlistState extends ReportScreenBuilder {
                                                         const EdgeInsets.all(
                                                             5.0),
                                                     child: Text(
-                                                      "Client/Vendor : ${inquiryDetails['client']}",
+                                                      "Client/Vendor : ${inquiryDetails.client}",
                                                       style: const TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:
@@ -238,7 +221,7 @@ class _ReportlistState extends ReportScreenBuilder {
                                                         const EdgeInsets.all(
                                                             5.0),
                                                     child: Text(
-                                                      "Product/Service : ${inquiryDetails['product_service']}",
+                                                      "Product/Service : ${inquiryDetails.productService}",
                                                       style: const TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:
@@ -250,7 +233,7 @@ class _ReportlistState extends ReportScreenBuilder {
                                                         const EdgeInsets.all(
                                                             5.0),
                                                     child: Text(
-                                                      "Last Visit : ${DateFormat.yMd().add_jm().format(inquiryDetails['start_at'])} ",
+                                                      "Last Visit : ${DateFormat.yMd().add_jm().format(inquiryDetails.startAt)} ",
                                                       style: const TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:
@@ -262,7 +245,7 @@ class _ReportlistState extends ReportScreenBuilder {
                                                         const EdgeInsets.all(
                                                             5.0),
                                                     child: Text(
-                                                      "Next Visit : ${DateFormat.yMd().add_jm().format(inquiryDetails['next_visit'])} ",
+                                                      "Next Visit : ${DateFormat.yMd().add_jm().format(inquiryDetails.nextVisit)} ",
                                                       style: const TextStyle(
                                                           fontSize: 15,
                                                           fontWeight:
@@ -273,14 +256,11 @@ class _ReportlistState extends ReportScreenBuilder {
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                      );
-                    }
-                  })
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                        )
                 ],
               ), // Container for Tab 1
             ),
@@ -308,9 +288,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectStartDate(context);
-                            setState(() {
-                              isShowInquriyStartLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -322,9 +299,7 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowInquriyStartLabel
-                                  ? 'Start Date'
-                                  : controller.startDateController.toString(),
+                              startDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
@@ -353,9 +328,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectEndDate(context);
-                            setState(() {
-                              isShowInquiryEndLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -367,13 +339,10 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowInquiryEndLabel
-                                  ? 'End Date'
-                                  : controller.endDateController.toString(),
+                              endDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
-                                fontFamily: 'Open Sans',
                                 letterSpacing: 0.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -386,161 +355,136 @@ class _ReportlistState extends ReportScreenBuilder {
                   SizedBox(
                     height: 15.h,
                   ),
-                  Consumer<ReportProvider>(builder: (_, provider, __) {
-                    if (provider.enquiryVisitDetailLoad) {
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      );
-                    } else {
-                      return Expanded(
-                          child: provider.inquiryVisitDetailList.isEmpty
-                              ? Text(provider.inquiryVisitMessage.toString())
+                  enquiryVisitDetailLoad
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : Expanded(
+                          child: inquiryVisitDetailList.isEmpty
+                              ? Text(inquiryVisitMessage.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: blueColor))
                               : ListView.builder(
                                   physics: const ClampingScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount:
-                                      provider.inquiryVisitDetailList.length,
+                                  itemCount: inquiryVisitDetailList.length,
                                   itemBuilder: (context, index) {
                                     var inquiryDetails =
-                                        provider.inquiryVisitDetailList[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Stack(
-                                        children: [
-                                          Card(
-                                            elevation: 5,
-                                            shape: RoundedRectangleBorder(
+                                        inquiryVisitDetailList[index];
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Visit At : ${inquiryDetails['visit_at']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Client/Vendor : ${inquiryDetails['vendor'] == null ? inquiryDetails['client'] : inquiryDetails['vendor']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Product/Services : ${inquiryDetails['product_service']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Visit Date : ${DateFormat.yMMMMd('en_US').format(inquiryDetails.startAt!)}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Person Name : ${inquiryDetails['person_name']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Order : ${inquiryDetails['order_done']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Complaints : ${inquiryDetails['query_complaint']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Text(
-                                                        "Remark : ${inquiryDetails['remark']}",
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  BorderRadius.circular(10),
+                                              color: tfColor),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Visit At : ${inquiryDetails.visitAt}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Client/Vendor : ${inquiryDetails.vendor == null ? inquiryDetails.client : inquiryDetails.vendor}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Product/Services : ${inquiryDetails.productService}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Visit Date : ${DateFormat.yMMMMd('en_US').format(inquiryDetails.startAt!)}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Person Name : ${inquiryDetails.personName}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Order : ${inquiryDetails.orderDone}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Complaints : ${inquiryDetails.queryComplaint}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    "Remark : ${inquiryDetails.remark}",
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     );
-                                  }));
-                    }
-                  })
+                                  }))
                 ],
               ),
             ),
@@ -568,9 +512,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectStartDate(context);
-                            setState(() {
-                              isShowAttendencStartLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -582,13 +523,10 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowAttendencStartLabel
-                                  ? 'Start Date'
-                                  : controller.startDateController.toString(),
+                              startDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
-                                fontFamily: 'Open Sans',
                                 letterSpacing: 0.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -613,9 +551,6 @@ class _ReportlistState extends ReportScreenBuilder {
                         GestureDetector(
                           onTap: () {
                             selectEndDate(context);
-                            setState(() {
-                              isShowAttendenceEndLabel = false;
-                            });
                           },
                           child: Container(
                             height: 55,
@@ -627,13 +562,10 @@ class _ReportlistState extends ReportScreenBuilder {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              isShowAttendenceEndLabel
-                                  ? 'End Date'
-                                  : controller.endDateController.toString(),
+                              endDateController.toString(),
                               style: const TextStyle(
                                 color: colorConst.colorIconBlue,
                                 fontSize: 14.0,
-                                fontFamily: 'Open Sans',
                                 letterSpacing: 0.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -646,105 +578,113 @@ class _ReportlistState extends ReportScreenBuilder {
                   SizedBox(
                     height: 15.h,
                   ),
-                  Consumer<ReportProvider>(builder: (_, provider, __) {
-                    if (provider.attendanceDataLoad) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return Expanded(
-                        child: provider.attendanceDataList.length == 0
-                            ? Text("${provider.attendanceMessage}")
-                            : ListView.builder(
-                                physics: AlwaysScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: provider.attendanceDataList.length,
-                                itemBuilder: (context, index) {
-                                  var inquiryDetails =
-                                      provider.attendanceDataList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Stack(
-                                      children: [
-                                        Card(
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Text(
-                                                      "Date : ${inquiryDetails['att_date']}",
-                                                      style: const TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                  attendanceDataLoad
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : Expanded(
+                          child: attendanceDataList.isEmpty
+                              ? Text(
+                                  attendanceMessage,
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: blueColor),
+                                )
+                              : Expanded(
+                                  child: ListView.builder(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: attendanceDataList.length,
+                                      itemBuilder: (context, index) {
+                                        var inquiryDetails =
+                                            attendanceDataList[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: tfColor),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Date : ${inquiryDetails.attDate}",
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Check In : ${inquiryDetails.inTime == null ? " Na " : inquiryDetails.inTime}",
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Check Out : ${inquiryDetails.outTime == null ? " Na " : inquiryDetails.outTime} ",
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Status : ${inquiryDetails.status} ",
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Text(
-                                                      "Check In : ${inquiryDetails['in_time'] == null ? " Na " : inquiryDetails['in_time']}",
-                                                      style: const TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Text(
-                                                      "Check Out : ${inquiryDetails['out_time'] == null ? " Na " : inquiryDetails['out_time']} ",
-                                                      style: const TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: Text(
-                                                      "Status : ${inquiryDetails['status']} ",
-                                                      style: const TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                      );
-                    }
-                  })
+                                        );
+                                      }),
+                                ),
+                        )
                 ],
               ),
             ),

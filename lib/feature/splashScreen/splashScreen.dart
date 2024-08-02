@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
@@ -28,7 +29,8 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     injectUserIDs();
-    userAppLoginStatus();
+    checkLoginStatus();
+    // userAppLoginStatus();
   }
 
   Future<void> sendUserAppStatusToServer(var appStatus) async {
@@ -76,25 +78,38 @@ class _SplashScreenState extends State<SplashScreen>
     intent.launch();
   }
 
-  userAppLoginStatus() async {
-    isLoggedIn =
-        await _secureStorageService.getUserData(key: StorageKeys.loginKey);
-    if (isLoggedIn != null) {
-      setState(() {
-        isLoggedIn = true;
-      });
-    } else {
-      setState(() {
-        isLoggedIn = false;
-      });
-    }
+  Future<void> checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool(StorageKeys.loginKey) ?? false;
 
-    Timer(
-        const Duration(seconds: 2),
-        () => isLoggedIn
-            ? GoRouter.of(context).goNamed(routerConst.homeNavBar)
-            : GoRouter.of(context).goNamed(routerConst.loginScreen));
+    Timer(const Duration(seconds: 3), () {
+      if (isLoggedIn) {
+        GoRouter.of(context).goNamed(routerConst.homeNavBar);
+      } else {
+        GoRouter.of(context).goNamed(routerConst.loginScreen);
+      }
+    });
   }
+
+  // userAppLoginStatus() async {
+  //   isLoggedIn =
+  //       await _secureStorageService.getUserData(key: StorageKeys.loginKey);
+  //   if (isLoggedIn != null) {
+  //     setState(() {
+  //       isLoggedIn = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       isLoggedIn = false;
+  //     });
+  //   }
+
+  //   Timer(
+  //       const Duration(seconds: 2),
+  //       () => isLoggedIn
+  //           ? GoRouter.of(context).goNamed(routerConst.homeNavBar)
+  //           : GoRouter.of(context).goNamed(routerConst.loginScreen));
+  // }
 
   injectUserIDs() async {
     setState(() {

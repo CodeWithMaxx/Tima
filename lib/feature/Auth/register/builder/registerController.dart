@@ -16,7 +16,7 @@ import 'package:tima_app/feature/Auth/register/screen/register.dart';
 
 abstract class RegisterController extends State<RegisterScreen> {
   final SecureStorageService _secureStorageService = SecureStorageService();
-
+  GlobalKey<FormState> creatformkey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final mobileController = TextEditingController();

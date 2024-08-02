@@ -12,6 +12,7 @@ import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/models/enquirydetailmodel.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/reciveInquiry/screen/reciveInquiry.dart';
 import 'package:tima_app/providers/inquireyProvider/inquiry_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
@@ -19,26 +20,30 @@ import 'package:tima_app/router/routes/routerConst.dart';
 abstract class RecivedInquiryController extends State<ReciveInquiry> {
   SecureStorageService secureStorageService = SecureStorageService();
   final InquiryProvider inquiryProvider = InquiryProvider();
+  String startDateController = "";
+  String endDateController = "";
+  List enquirydetailList = [];
+  bool enquirydetailload = false;
   var reject_msg_controller = TextEditingController();
   DateTime selectedDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
+  List<Datum> getEnqList = [];
   bool pageloder = true;
   @override
   void initState() {
-    inquiryProvider.startDateController =
-        DateFormat('yyyy-MM-dd').format(selectedDate);
+    startDateController = DateFormat('yyyy-MM-dd').format(selectedDate);
 
-    inquiryProvider.endDateController =
-        DateFormat('yyyy-MM-dd').format(selectedEndDate);
+    endDateController = DateFormat('yyyy-MM-dd').format(selectedEndDate);
 
     getBranchesCall();
-    getInquiryDataFromApi();
+    getEnqueryApi();
 
     super.initState();
   }
 
   var branchesID;
   var branchesName;
+  bool rejectenquiryload = false;
   List branches = [];
 
   Future<void> getBranchesCall() async {
@@ -86,11 +91,10 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
       setState(() {
         selectedDate = picked;
         var date = DateFormat.yMd().format(selectedDate);
-        inquiryProvider.startDateController =
-            DateFormat('yyyy-MM-dd').format(selectedDate);
+        startDateController = DateFormat('yyyy-MM-dd').format(selectedDate);
 
-        if (inquiryProvider.endDateController != "") {}
-        getInquiryDataFromApi();
+        if (endDateController != "") {}
+        getEnqueryApi();
       });
     }
   }
@@ -106,9 +110,8 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
     if (picked != null) {
       setState(() {
         selectedEndDate = picked;
-        inquiryProvider.endDateController =
-            DateFormat('yyyy-MM-dd').format(selectedEndDate);
-        getInquiryDataFromApi();
+        endDateController = DateFormat('yyyy-MM-dd').format(selectedEndDate);
+        getEnqueryApi();
       });
     }
   }
@@ -125,7 +128,7 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
                   insetPadding: EdgeInsets.only(left: 10, right: 10),
                   contentPadding: EdgeInsets.zero,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  title: Text("Want to reject Inquiry?"),
+                  title: const Text("Want to reject Inquiry?"),
                   content: Container(
                     padding:
                         const EdgeInsets.only(top: 10, left: 20, right: 20),
@@ -181,13 +184,13 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
                           String? userID = await secureStorageService.getUserID(
                               key: StorageKeys.userIDKey);
                           var body = ({
-                            'user_id': userID,
-                            'enq_id': inquiryID,
+                            'user_id': userID.toString(),
+                            'enq_id': inquiryID.toString(),
                             'reason': reject_msg_controller.text
                           });
                           var url = reject_enquiry_app_url;
-                          await inquiryProvider.rejectenquiryapi(url, body);
-                          await getInquiryDataFromApi();
+                          await rejectEnqueyApi(url, body);
+                          await getEnqueryApi();
 
                           Navigator.of(context).pop();
                         }
@@ -196,7 +199,7 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
                     TextButton(
                         onPressed: () async {},
                         child: lebelText(
-                            labelText: 'OK', size: 17, color: blueColor)),
+                            labelText: 'Back', size: 17, color: blueColor)),
                   ],
                 ),
                 Positioned(
@@ -223,22 +226,52 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
         });
   }
 
-  Future<void> getInquiryDataFromApi() async {
-    String? userID =
-        await secureStorageService.getUserID(key: StorageKeys.userIDKey) ?? '0';
-    var body = ({
-      'user_id': userID.toString(),
-      'from_date': inquiryProvider.startDateController,
-      'to_date': inquiryProvider.endDateController,
-      "inq_type": "received",
-      'inq_id': widget.indexlistno,
-      'branch_id': branchesID
-    });
-    var url = show_enquiry_report_app_url;
-    inquiryProvider.getenquiryapi(url, body);
+  Future<void> rejectEnqueyApi(String url, dynamic body) async {
+    rejectenquiryload = true;
 
-    pageloder = false;
-    setState(() {});
+    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+
+    if (result.statusCode == 200) {
+      var responsedata = jsonDecode(result.body);
+      log("client getenquiry_detail body: $body");
+      log("client getenquiry_detail response: ${result.body}");
+      Fluttertoast.showToast(msg: responsedata['message']);
+    }
+
+    rejectenquiryload = false;
+  }
+
+  Future<void> getEnqueryApi() async {
+    enquirydetailload = true;
+    String? userID =
+        await secureStorageService.getUserID(key: StorageKeys.userIDKey);
+    var url = show_enquiry_report_app_url;
+
+    var body = {
+      'user_id': userID.toString(),
+      'from_date': startDateController.toString(),
+      'to_date': endDateController.toString(),
+      "inq_type": "received",
+      'inq_id': '0',
+      'branch_id': branchesID.toString()
+    };
+    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+
+    if (result.statusCode == 200) {
+      var responsedata = jsonDecode(result.body);
+      log("client getenquiry_detail body =>$body");
+      log("client getenquiry_detail response =>${result.body}");
+      enquirydetailList.add(responsedata['data']);
+      GetEnquiryDetailModel getEnquiryDetailModel =
+          GetEnquiryDetailModel.fromJson(responsedata);
+
+      getEnqList = getEnquiryDetailModel.data;
+
+      Fluttertoast.showToast(msg: responsedata['message']);
+      setState(() {});
+    }
+
+    enquirydetailload = false;
   }
 
   addItemDialogBox() async {
@@ -246,10 +279,10 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return WillPopScope(
-            onWillPop: () async {
-              // Disable back button press
-              return Future.value(false);
+          return PopScope(
+            canPop: false, // Disable back button press
+            onPopInvoked: (didPop) {
+              return;
             },
             child: StatefulBuilder(builder: (context, setState) {
               return Stack(
@@ -305,7 +338,7 @@ abstract class RecivedInquiryController extends State<ReciveInquiry> {
                             Fluttertoast.showToast(
                                 msg: "Please Select Branch Name");
                           } else {
-                            await getInquiryDataFromApi();
+                            await getEnqueryApi();
 
                             GoRouter.of(context).pop();
                           }

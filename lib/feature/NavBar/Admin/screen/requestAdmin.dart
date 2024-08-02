@@ -10,20 +10,20 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tima_app/Admin/controller/adminController.dart';
+import 'package:tima_app/feature/NavBar/Admin/controller/adminController.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
 class RequestAdmin extends StatefulWidget {
-  var inquiryID;
-  RequestAdmin({super.key, this.inquiryID});
+ const RequestAdmin({super.key});
 
   @override
   State<RequestAdmin> createState() => _RequestAdminState();
@@ -41,11 +41,7 @@ class _RequestAdminState extends AdminController {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            'Visit',
-            style: TextStyle(
-                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          title: txtHelper().heading1Text('VISIT', 23, blueColor),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -873,7 +869,7 @@ class _RequestAdminState extends AdminController {
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
                                                     : '',
                                                 'remark': remarkController.text,
-                                                "inq_id": widget.inquiryID,
+                                                "inq_id": '0',
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
@@ -914,7 +910,7 @@ class _RequestAdminState extends AdminController {
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
                                                     : '',
                                                 'remark': remarkController.text,
-                                                "inq_id": widget.inquiryID,
+                                                "inq_id": '0',
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
@@ -928,9 +924,8 @@ class _RequestAdminState extends AdminController {
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              print(
-                                                  "postAPICall Enquiry response " +
-                                                      result.body.toString());
+                                              log(
+                                                  "postAPICall Enquiry response==> ${result.body} ");
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -939,12 +934,10 @@ class _RequestAdminState extends AdminController {
                                                     jsonDecode(result.body);
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
-                                                print(
-                                                    "Create Enquiry registration " +
-                                                        body.toString());
-                                                print(
-                                                    "Create Enquiry registration " +
-                                                        result.body.toString());
+                                                log(
+                                                    "Create Enquiry registration ==>$body");
+                                                log(
+                                                    "Create Enquiry registration==> ${result.body} ");
                                                 toastMsg(
                                                     "${responsedata['message']}",
                                                     false);
@@ -1035,12 +1028,11 @@ class _RequestAdminState extends AdminController {
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
                                                     : '',
                                                 'remark': remarkController.text,
-                                                "inq_id": widget.inquiryID,
+                                                "inq_id": '0',
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
-                                              print("check body : " +
-                                                  body.toString());
+                                              log("check body :=> $body ");
                                               var request =
                                                   http.MultipartRequest(
                                                       'POST',
@@ -1077,7 +1069,7 @@ class _RequestAdminState extends AdminController {
                                                     ? '${selectedDate.toString().split(' ')[0]} ${selectedTime!.format(context)}'
                                                     : '',
                                                 'remark': remarkController.text,
-                                                "inq_id": widget.inquiryID,
+                                                "inq_id": '0',
                                                 'location':
                                                     "${ref.lat.value},${ref.lng.value}"
                                               });
@@ -1091,9 +1083,8 @@ class _RequestAdminState extends AdminController {
                                                   await request.send();
                                               var result = await http.Response
                                                   .fromStream(responses);
-                                              print(
-                                                  "postAPICall Enquiry response " +
-                                                      result.body.toString());
+                                              log(
+                                                  "postAPICall Enquiry response ==> ${result.body}");
                                               setState(() {
                                                 formloder = false;
                                               });
@@ -1101,12 +1092,10 @@ class _RequestAdminState extends AdminController {
                                               if (result.statusCode == 200) {
                                                 var responsedata =
                                                     jsonDecode(result.body);
-                                                print(
-                                                    "Create Enquiry registration " +
-                                                        body.toString());
-                                                print(
-                                                    "Create Enquiry registration " +
-                                                        result.body.toString());
+                                                log(
+                                                    "Create Enquiry registration ==>$body");
+                                                log(
+                                                    "Create Enquiry registration ==> ${result.body}");
                                                 GoRouter.of(context).goNamed(
                                                     routerConst.homeNavBar);
                                                 toastMsg(

@@ -107,9 +107,9 @@ class _VisitDeatilState extends State<VisitDeatil> {
               return ListView.builder(
                   physics: ClampingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: ref.enquiryvisiDetail.data!.length,
+                  itemCount: ref.enquiryvisiDetail.data.length,
                   itemBuilder: (context, index) {
-                    var InquiryDetails = ref.enquiryvisiDetail.data![index];
+                    var InquiryDetails = ref.enquiryvisiDetail.data[index];
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Stack(

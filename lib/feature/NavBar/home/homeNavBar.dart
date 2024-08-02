@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tima_app/Admin/screen/requestAdmin.dart';
+import 'package:tima_app/feature/NavBar/Admin/screen/requestAdmin.dart';
+import 'package:tima_app/feature/NavBar/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/NavBar/report/screen/reportList.dart';
-import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/home/screen/home.dart';
 
 class HomeNavBar extends StatefulWidget {
+  const HomeNavBar({super.key});
+
   @override
   HomeNavBarState createState() => HomeNavBarState();
 }
@@ -138,9 +140,7 @@ class HomeNavBarState extends State<HomeNavBar> {
   List<Widget> pageList = [
     const Home(),
     const Markattendance(),
-    RequestAdmin(
-      inquiryID: "0",
-    ),
+    RequestAdmin(),
     const Reportlist(),
   ];
 

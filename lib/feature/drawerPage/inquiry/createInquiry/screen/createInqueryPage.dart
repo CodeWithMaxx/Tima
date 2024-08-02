@@ -13,6 +13,7 @@ import 'package:tima_app/core/GWidgets/textfieldsStyle.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/createInquiry/controller/createInquiryScreenController.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -33,8 +34,7 @@ class _CreateInquiryState extends CreateInquiryController {
         elevation: 0,
         title: Padding(
             padding: const EdgeInsets.only(left: 40.0),
-            child: lebelText(
-                labelText: 'Create Inquiry', size: 20, color: blueColor)),
+            child: txtHelper().heading1Text('CREATE INQUIRY', 21, blueColor)),
       ),
       body: Form(
         key: creatformkey,

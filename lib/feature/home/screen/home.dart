@@ -1,9 +1,10 @@
 // ignore_for_file: unused_label
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
 import 'package:tima_app/core/constants/textconst.dart';
+import 'package:tima_app/feature/LogOut/logout.dart';
 import 'package:tima_app/feature/home/builder/homeBuilder.dart';
 
 class Home extends StatefulWidget {
@@ -19,6 +20,7 @@ class _HomeState extends HomeBuilder with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     callHomeBannerFromApi();
     usreInit();
+
     super.initState();
   }
 
@@ -30,17 +32,19 @@ class _HomeState extends HomeBuilder with WidgetsBindingObserver {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text(
-            "Tima",
-            style: GoogleFonts.poppins(
-                fontSize: 22.w, color: greyColor, fontWeight: FontWeight.bold),
-          ),
+          title: txtHelper().heading1Text('TIMA', 23, blueColor),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomDialog();
+                      },
+                    ),
                 icon: const Icon(
-                  Icons.notifications_active,
+                  CupertinoIcons.settings_solid,
                   color: greyColor,
+                  size: 27,
                 ))
           ],
         ),
@@ -76,7 +80,10 @@ class _HomeState extends HomeBuilder with WidgetsBindingObserver {
             SizedBox(
               height: 20.h,
             ),
-            txtHelper().heading1Text(timaHomeLogo.toString(), 25, blueColor),
+            timaHomeLogo != null
+                ? txtHelper()
+                    .heading1Text(timaHomeLogo.toString(), 25, blueColor)
+                : txtHelper().heading1Text('Powered by TIMA', 25, blueColor)
           ],
         ),
         drawer: TimaAppDrawer,

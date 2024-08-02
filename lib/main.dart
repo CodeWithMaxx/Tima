@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:tima_app/feature/NavBar/report/provider/reportProvder.dart';
-import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/provider/generateInqProvider.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/providers/inquireyProvider/inquiry_provider.dart';
 import 'package:tima_app/router/routes/routerConfig.dart';
@@ -13,7 +11,11 @@ import 'package:tima_app/router/routes/routerConfig.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => LocationProvider()),
+    ChangeNotifierProvider(create: (_) => InquiryProvider()),
+    // ChangeNotifierProvider(create: (_) => EnquiryProvider()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,23 +26,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       // * dependency injection for mulitblocproviders
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => LocationProvider()),
-          ChangeNotifierProvider(create: (_) => InquiryProvider()),
-          ChangeNotifierProvider(create: (_) => ReportProvider()),
-          ChangeNotifierProvider(create: (_) => EnquiryProvider()),
-        ],
-        child: MaterialApp.router(
-          theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                  backgroundColor: Colors.transparent, elevation: 0)),
-          debugShowCheckedModeBanner: false,
-          routerConfig: routerConfigue().pageRouter,
-          builder: FToastBuilder(),
-          key: navigatorKey,
-        ),
+      child: MaterialApp.router(
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.transparent, elevation: 0)),
+        debugShowCheckedModeBanner: false,
+        routerConfig: routerConfigue().pageRouter,
+        builder: FToastBuilder(),
+        key: navigatorKey,
       ),
     );
   }

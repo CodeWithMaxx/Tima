@@ -20,12 +20,12 @@ import 'package:tima_app/router/routes/routerConst.dart';
 abstract class LoginController extends State<PhoneEmailLogin> {
   final SecureStorageService _secureStorageService = SecureStorageService();
   final storageHub = const FlutterSecureStorage();
+
   // SharedPreference
   // DBModel? dbModel;
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  GlobalKey<FormState> changePassKey = GlobalKey<FormState>();
   bool newpasswordVisible = true;
   bool rePasswordVisible = true;
   bool isloading = false;
@@ -35,7 +35,7 @@ abstract class LoginController extends State<PhoneEmailLogin> {
 
   // ! Login Mathod
   Future<void> appLogInAuthentication() async {
-    final prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     final client = http.Client();
@@ -137,6 +137,8 @@ abstract class LoginController extends State<PhoneEmailLogin> {
             // *save user_loginInfo on local database
             _secureStorageService.saveUserLoginToken(
                 key: StorageKeys.loginKey, value: true);
+
+            prefs.setBool(StorageKeys.loginKey, true);
 
             /* store api response data in secure_storage local database and 
             access with the keyname like 'userid' or other */

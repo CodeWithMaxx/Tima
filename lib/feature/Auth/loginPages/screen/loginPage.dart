@@ -15,6 +15,7 @@ class PhoneEmailLogin extends StatefulWidget {
 }
 
 class _PhoneEmailLoginState extends LoginController {
+  GlobalKey<FormState> authKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,7 +55,7 @@ class _PhoneEmailLoginState extends LoginController {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Form(
-                    key: changePassKey,
+                    key: authKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -62,7 +63,7 @@ class _PhoneEmailLoginState extends LoginController {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             txtHelper()
-                                .heading1Text('Mobile LogIn', 25, blueColor),
+                                .heading1Text('MOBILE LOGIN', 25, blueColor),
                           ],
                         ),
                         SizedBox(
@@ -106,7 +107,7 @@ class _PhoneEmailLoginState extends LoginController {
                             validator: (value) {
                               if (emailController.text.isEmpty &&
                                   mobileController.text.isEmpty) {
-                                return 'Either email or mobile number is required';
+                                return 'Ente email or mobile number is required';
                               }
                               return null;
                             },
@@ -280,7 +281,7 @@ class _PhoneEmailLoginState extends LoginController {
             Positioned(
               top: 10.h,
               left: 140.w,
-              child: txtHelper().heading1Text('Tima', 27, Colors.white),
+              child: txtHelper().heading1Text('TIMA', 27, Colors.white),
             )
           ],
         ),

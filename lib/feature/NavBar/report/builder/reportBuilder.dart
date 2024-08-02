@@ -1,36 +1,53 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
+import 'package:tima_app/core/models/attendancemodel.dart';
+import 'package:tima_app/core/models/enquiryviewdetailmodel.dart';
 import 'package:tima_app/core/models/nextvisitmodel.dart';
-import 'package:tima_app/feature/NavBar/report/provider/reportProvder.dart';
 import 'package:tima_app/feature/NavBar/report/screen/reportList.dart';
 
 abstract class ReportScreenBuilder extends State<Reportlist> {
   final SecureStorageService _secureStorageService = SecureStorageService();
 
   final client = http.Client();
-  NextVisitModel nextVisitModel = NextVisitModel();
   dynamic startDateController;
   dynamic endDateController;
+  var nextVisitLoad = false;
 
-  final ReportProvider controller = ReportProvider();
+  List<Datum> nextVisitDataModelList = [];
 
   DateTime selectedDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
-  var nextVisitMessage;
+  dynamic nextVisitMessage;
+  List<Datum> nextVisitDataList = [];
+
+  List<DataList> inquiryVisitDetailList = [];
+  dynamic inquiryVisitMessage;
+  // * attendence tab
+
+  List<AttDatum> attendanceDataList = [];
+  var attendanceDataLoad = false;
+  String attendanceMessage = '';
+
+  var enquiryVisitDetailLoad = false;
+
   @override
   void initState() {
-    // TODO: implement initState
     startDateController = DateFormat('yyyy-MM-dd').format(selectedDate);
     endDateController = DateFormat('yyyy-MM-dd').format(selectedEndDate);
-    getnextvisitapi();
-    getvisitdataapi();
-    getattendanceapi();
+    getNextVisitApi();
+    getEnquiryDetailApi();
+    getAttendance();
     super.initState();
   }
 
@@ -47,12 +64,11 @@ abstract class ReportScreenBuilder extends State<Reportlist> {
       setState(() {
         selectedDate = picked;
         var date = DateFormat.yMd().format(selectedDate);
-        controller.startDateController =
-            DateFormat('yyyy-MM-dd').format(selectedDate);
-        if (controller.endDateController != "") {
-          getnextvisitapi();
-          getvisitdataapi();
-          getattendanceapi();
+        startDateController = DateFormat('yyyy-MM-dd').format(selectedDate);
+        if (endDateController != "") {
+          getNextVisitApi();
+          getEnquiryDetailApi();
+          getAttendance();
         }
       });
     }
@@ -69,51 +85,103 @@ abstract class ReportScreenBuilder extends State<Reportlist> {
     if (picked != null) {
       setState(() {
         selectedEndDate = picked;
-        controller.endDateController =
-            DateFormat('yyyy-MM-dd').format(selectedEndDate);
-        getnextvisitapi();
-        getvisitdataapi();
-        getattendanceapi();
+        endDateController = DateFormat('yyyy-MM-dd').format(selectedEndDate);
+        getNextVisitApi();
+        getEnquiryDetailApi();
+        getAttendance();
       });
     }
   }
 
-  Future<void> getnextvisitapi() async {
+  void getNextVisitApi() async {
+    nextVisitLoad = true;
+    setState(() {});
     String? userID =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
     var body = ({
-      'user_id': userID,
-      'from_date': controller.startDateController,
-      'to_date': controller.endDateController
+      'user_id': userID.toString(),
+      'from_date': startDateController.toString(),
+      'to_date': endDateController.toString()
     });
     var url = show_next_visit_app_url;
-    controller.getNextVisitApi(url, body);
+
+    var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+
+    if (response.statusCode == 200) {
+      var decodedResponse = jsonDecode(response.body);
+
+      log("client NextVisitModel body -->body");
+      log("client NextVisitModel response -->${response.body}");
+
+      NextVisitModel nextVisitModel = NextVisitModel.fromJson(decodedResponse);
+
+      nextVisitMessage = nextVisitModel.message;
+
+      nextVisitDataModelList = nextVisitModel.data;
+
+      Fluttertoast.showToast(msg: decodedResponse['message']);
+    }
+    nextVisitLoad = false;
+    setState(() {});
   }
 
-  Future<void> getvisitdataapi() async {
+  Future<void> getEnquiryDetailApi() async {
+    enquiryVisitDetailLoad = true;
+
+    setState(() {});
+
     String? userID =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
     var body = ({
       'user_id': userID.toString(),
       'id': "0",
-      'from_date': controller.startDateController,
-      'to_date': controller.endDateController
+      'from_date': startDateController,
+      'to_date': endDateController
     });
 
     var url = get_visit_data_url;
-    controller.getEnquiryDetailApi(url, body);
+    log("client getenquiry_detail body --$url");
+    log("client getenquiry_detail body -->$body ");
+
+    var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+    log("client getenquiry_detail response --> ${response.body}");
+    if (response.statusCode == 200) {
+      var responseData = jsonDecode(response.body);
+      var enquiryVisitDetail = GetEnquiryViewDetailModel.fromJson(responseData);
+      inquiryVisitDetailList = enquiryVisitDetail.data;
+      inquiryVisitMessage = enquiryVisitDetail.message;
+
+      log("client getenquiryView_detail response -->${nextVisitDataList.length} ");
+      enquiryVisitDetailLoad = false;
+
+      // Fluttertoast.showToast(msg: responseData['message']);
+    }
+    enquiryVisitDetailLoad = false;
+    setState(() {});
   }
 
-  Future<void> getattendanceapi() async {
+  void getAttendance() async {
+    attendanceDataLoad = true;
+    setState(() {});
     String? userID =
         await _secureStorageService.getUserID(key: StorageKeys.userIDKey);
     var body = ({
       'user_id': userID.toString(),
-      'from_date': controller.startDateController,
-      'to_date': controller.endDateController
+      'from_date': startDateController,
+      'to_date': endDateController
     });
 
     var url = show_attendance_app_url;
-    controller.getAttendance(url, body);
+    log("client attendancedata body $body");
+    var response = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
+    log("client attendancedata response $response.body");
+    if (response.statusCode == 200) {
+      var responseData = jsonDecode(response.body);
+      var attendanceData = AttendanceModel.fromJson(responseData);
+      attendanceMessage = attendanceData.message;
+      attendanceDataList = attendanceData.data;
+    }
+    attendanceDataLoad = false;
+    setState(() {});
   }
 }

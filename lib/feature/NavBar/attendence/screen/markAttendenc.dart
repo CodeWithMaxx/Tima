@@ -12,7 +12,8 @@ import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
-import 'package:tima_app/feature/attendence/builder/attendenceBuilder.dart';
+import 'package:tima_app/core/constants/textconst.dart';
+import 'package:tima_app/feature/NavBar/attendence/builder/attendenceBuilder.dart';
 import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -32,18 +33,10 @@ class _MarkattendanceState extends AttendenceBuilder {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Mark Attendance',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontFamily: 'Metropilis',
-                fontWeight: FontWeight.bold),
-          ),
-        ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            title: txtHelper().heading1Text('MARK ATTENDENCE', 21, blueColor)),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

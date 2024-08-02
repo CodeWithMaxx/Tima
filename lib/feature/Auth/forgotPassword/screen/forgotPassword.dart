@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/constants/formValidation.dart';
 import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/feature/Auth/forgotPassword/builder/forgotPassController.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
@@ -32,6 +33,7 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -81,24 +83,21 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   txtHelper().heading1Text(
-                                      'Forgot Password', 22, blueColor),
+                                      'FORGOT PASSWORD', 23, blueColor),
                                 ],
                               ),
                               const SizedBox(
                                 height: 30,
                               ),
                               Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(top: 5),
-                                height: 56,
-                                width: double.infinity,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(15),
                                     color: tfColor),
+                                width: size.width,
                                 child: TextFormField(
                                   controller: newPassController,
-                                  // validator:
-                                  //     form_validation.validatenewpassword,
+                                  validator:
+                                      form_validation.validatenewpassword,
                                   obscureText: _newpasswordVisible,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -129,13 +128,10 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
                                 height: 20,
                               ),
                               Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(top: 5),
-                                height: 56,
-                                width: double.infinity,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(15),
                                     color: tfColor),
+                                width: size.width,
                                 child: TextFormField(
                                   controller: rePassController,
                                   obscureText: _confirmpasswordVisible,
@@ -221,7 +217,7 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
                           color: blueColor,
                         ),
                         onPressed: () {
-                          GoRouter.of(context).goNamed(routerConst.homeNavBar);
+                          GoRouter.of(context).goNamed(routerConst.loginScreen);
                         },
                       ),
                     ),
@@ -229,7 +225,7 @@ class _ForgotPasswordScreenState extends ForgotPasswordController {
                   Positioned(
                     top: 10,
                     left: 140,
-                    child: txtHelper().heading1Text('Tima', 27, Colors.white),
+                    child: txtHelper().heading1Text('TIMA', 27, Colors.white),
                   )
                 ],
               ),

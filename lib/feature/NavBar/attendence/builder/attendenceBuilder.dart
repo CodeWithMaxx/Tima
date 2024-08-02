@@ -7,7 +7,7 @@ import 'package:tima_app/ApiService/postApiBaseHelper.dart';
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
-import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
+import 'package:tima_app/feature/NavBar/attendence/screen/markAttendenc.dart';
 
 abstract class AttendenceBuilder extends State<Markattendance> {
   SecureStorageService secureStorageService = SecureStorageService();

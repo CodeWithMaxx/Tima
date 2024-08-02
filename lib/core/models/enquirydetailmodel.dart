@@ -11,13 +11,13 @@ String getEnquiryDetailModelToJson(GetEnquiryDetailModel data) =>
     json.encode(data.toJson());
 
 class GetEnquiryDetailModel {
-  int? status;
-  String? message;
+  int status;
+  String message;
   List<Datum> data;
 
   GetEnquiryDetailModel({
-    this.status,
-    this.message,
+    required this.status,
+    required this.message,
     required this.data,
   });
 

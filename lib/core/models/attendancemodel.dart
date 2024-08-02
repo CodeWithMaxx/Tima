@@ -11,31 +11,32 @@ String attendanceModelToJson(AttendanceModel data) =>
     json.encode(data.toJson());
 
 class AttendanceModel {
-  int? status;
-  String? message;
-  List<Datum>? data;
+  int status;
+  String message;
+  List<AttDatum> data;
 
   AttendanceModel({
-    this.status,
-    this.message,
-    this.data,
+    required this.status,
+    required this.message,
+    required this.data,
   });
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) =>
       AttendanceModel(
         status: json["status"],
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data:
+            List<AttDatum>.from(json["data"].map((x) => AttDatum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
-class Datum {
+class AttDatum {
   String? id;
   String? userId;
   String? attDate;
@@ -43,7 +44,7 @@ class Datum {
   String? outTime;
   String? status;
 
-  Datum({
+  AttDatum({
     this.id,
     this.userId,
     this.attDate,
@@ -52,7 +53,7 @@ class Datum {
     this.status,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory AttDatum.fromJson(Map<String, dynamic> json) => AttDatum(
         id: json["id"],
         userId: json["user_id"],
         attDate: json["att_date"],

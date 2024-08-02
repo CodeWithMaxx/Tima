@@ -13,6 +13,7 @@ import 'package:tima_app/DataBase/keys/keys.dart';
 import 'package:tima_app/core/GWidgets/toast.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/core/constants/formValidation.dart';
 import 'package:tima_app/core/constants/textconst.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -116,6 +117,7 @@ class _HomeForgotPassState extends State<HomeForgotPass> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -165,24 +167,21 @@ class _HomeForgotPassState extends State<HomeForgotPass> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   txtHelper().heading1Text(
-                                      'Forgot Password', 22, blueColor),
+                                      'FORGOT PASSWORD', 23, blueColor),
                                 ],
                               ),
                               const SizedBox(
                                 height: 30,
                               ),
                               Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(top: 5),
-                                height: 56,
-                                width: double.infinity,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(15),
                                     color: tfColor),
+                                width: size.width,
                                 child: TextFormField(
                                   controller: newPassController,
-                                  // validator:
-                                  //     form_validation.validatenewpassword,
+                                  validator:
+                                      form_validation.validatenewpassword,
                                   obscureText: _newpasswordVisible,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -213,13 +212,10 @@ class _HomeForgotPassState extends State<HomeForgotPass> {
                                 height: 20,
                               ),
                               Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(top: 5),
-                                height: 56,
-                                width: double.infinity,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(15),
                                     color: tfColor),
+                                width: size.width,
                                 child: TextFormField(
                                   controller: rePassController,
                                   obscureText: _confirmpasswordVisible,
@@ -313,7 +309,7 @@ class _HomeForgotPassState extends State<HomeForgotPass> {
                   Positioned(
                     top: 10,
                     left: 140,
-                    child: txtHelper().heading1Text('Tima', 27, Colors.white),
+                    child: txtHelper().heading1Text('TIMA', 27, Colors.white),
                   )
                 ],
               ),

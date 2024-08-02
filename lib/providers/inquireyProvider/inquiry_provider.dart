@@ -4,15 +4,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tima_app/ApiService/postApiBaseHelper.dart';
-import 'package:tima_app/core/models/enquirydetailmodel.dart';
 import 'package:tima_app/core/models/enquirydetailviewmodel.dart';
 import 'package:tima_app/core/models/enquiryviewdetailmodel.dart';
 import 'package:tima_app/core/models/generatedinquirymodel.dart';
 
 class InquiryProvider with ChangeNotifier {
-  GetEnquiryDetailModel enquirydetail = GetEnquiryDetailModel(data: []);
   List enquirydetailList = [];
-  var enquiryvisiDetail = GetEnquiryViewDetailModel();
+  var enquiryvisiDetail =
+      GetEnquiryViewDetailModel(data: [], message: '', status: DateTime.april);
 
   List dataList = [];
   var inquirydetail = GetEnquiryDetailViewModel();
@@ -29,29 +28,6 @@ class InquiryProvider with ChangeNotifier {
   List<EnquiryData> enquiryList = [];
 
   List<dynamic> responseList = [];
-
-  Future<void> getenquiryapi(String url, dynamic body) async {
-    enquirydetailload = true;
-    notifyListeners();
-
-    var result = await ApiBaseHelper().postAPICall(Uri.parse(url), body);
-
-    if (result.statusCode == 200) {
-      var responsedata = jsonDecode(result.body);
-      log("client getenquiry_detail body " + body.toString());
-      log("client getenquiry_detail response " + result.body.toString());
-      enquirydetailList.add(responsedata['data']);
-      GetEnquiryDetailModel.fromJson(responsedata);
-
-      notifyListeners();
-      // log("client getenquiry_detail response " +
-      //     enquirydetail.data!.length.toString());
-      Fluttertoast.showToast(msg: responsedata['message']);
-    }
-
-    enquirydetailload = false;
-    notifyListeners();
-  }
 
   Future<void> rejectenquiryapi(String url, dynamic body) async {
     rejectenquiryload = true;
@@ -82,7 +58,7 @@ class InquiryProvider with ChangeNotifier {
       log("client getenquiry_detail response: $result.body");
       var data = GetEnquiryViewDetailModel.fromJson(responsedata);
       enquiryvisiDetail = data;
-      log("client getenquiryView_detail response: ${enquiryvisiDetail.data!.length} ");
+      log("client getenquiryView_detail response: ${enquiryvisiDetail.data.length} ");
       Fluttertoast.showToast(msg: responsedata['message']);
     }
 

@@ -1,12 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:tima_app/Admin/screen/requestAdmin.dart';
 import 'package:tima_app/Error/401.dart';
 import 'package:tima_app/feature/Auth/forgotPassword/screen/forgotPassword.dart';
 import 'package:tima_app/feature/Auth/forgotPassword/screen/home_forgot_pass.dart';
 import 'package:tima_app/feature/Auth/loginPages/screen/loginPage.dart';
 import 'package:tima_app/feature/Auth/register/screen/register.dart';
+import 'package:tima_app/feature/NavBar/Admin/screen/requestAdmin.dart';
+import 'package:tima_app/feature/NavBar/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/NavBar/home/homeNavBar.dart';
-import 'package:tima_app/feature/attendence/screen/markAttendenc.dart';
 import 'package:tima_app/feature/drawerPage/homeLocation/homelocation.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/createInquiry/screen/createInqueryPage.dart';
 import 'package:tima_app/feature/drawerPage/inquiry/generateInquiry/screen/generateInquiry.dart';
@@ -21,7 +21,7 @@ import 'package:tima_app/router/routes/routerConst.dart';
 
 class routerConfigue {
   final GoRouter pageRouter =
-      GoRouter(initialLocation: routerConst.homeNavBar, routes: [
+      GoRouter(initialLocation: routerConst.splashScreen, routes: [
     // !home page
     GoRoute(
       path: routerConst.homePage,
@@ -36,10 +36,7 @@ class routerConfigue {
       path: routerConst.registerScreen,
       name: routerConst.registerScreen,
       builder: (context, state) {
-        String inquiryID = state.extra as String;
-        return RegisterScreen(
-          inquryID: inquiryID,
-        );
+        return RegisterScreen();
       },
     ),
 
@@ -62,11 +59,12 @@ class routerConfigue {
     ),
 
     // !NavigationBar LogIn
+
     GoRoute(
       path: routerConst.homeNavBar,
       name: routerConst.homeNavBar,
       builder: (context, state) {
-        return HomeNavBar();
+        return const HomeNavBar();
       },
     ),
 
@@ -79,15 +77,6 @@ class routerConfigue {
       },
     ),
 
-    // ! loading animation for home
-    // GoRoute(
-    //   path: routerConst.globalNavBar,
-    //   name: routerConst.globalNavBar,
-    //   builder: (context, state) {
-    //     return const GlobalBottomNavBar();
-    //   },
-    // ),
-
     // ! Home Forgot Password
     GoRoute(
       path: routerConst.homeForgotPass,
@@ -97,18 +86,17 @@ class routerConfigue {
       },
     ),
 
-    //  GoRoute(
-    //   path: routerConst.passwordPage,
-    //   name: routerConst.passwordPage,
-    //   builder: (context, state) {
-    //     EmailOrPassword emailOrPassword = state.extra as EmailOrPassword;
-    //     return PasswordLoginField(
-    //       emailOrPassword: emailOrPassword,
-    //     );
-    //   },
-    // ),
+    // ! Mark Attendence
 
-    // !Splash Screens
+    GoRoute(
+      path: routerConst.markAttendence,
+      name: routerConst.markAttendence,
+      builder: (context, state) {
+        return const Markattendance();
+      },
+    ),
+
+    // ! Splash Screens
     GoRoute(
       path: routerConst.splashScreen,
       name: routerConst.splashScreen,
@@ -123,9 +111,7 @@ class routerConfigue {
       name: routerConst.register,
       builder: (context, state) {
         String inquiryID = state.extra as String;
-        return RegisterScreen(
-          inquryID: inquiryID,
-        );
+        return RegisterScreen();
       },
     ),
 
@@ -138,22 +124,7 @@ class routerConfigue {
       },
     ),
 
-    // ! Error 401  Screens
-    GoRoute(
-      path: routerConst.markAttendence,
-      name: routerConst.markAttendence,
-      builder: (context, state) {
-        return const Markattendance();
-      },
-    ),
-
-    // GoRoute(
-    //   path: routerConst.demoPage,
-    //   name: routerConst.demoPage,
-    //   builder: (context, state) {
-    //     return AnotherPage();
-    //   },
-    // ),
+    // ! login screen
 
     GoRoute(
       path: routerConst.loginScreen,
@@ -198,9 +169,7 @@ class routerConfigue {
       name: routerConst.requestAdmin,
       builder: (context, state) {
         String inquiryID = state.extra as String;
-        return RequestAdmin(
-          inquiryID: inquiryID,
-        );
+        return RequestAdmin();
       },
     ),
 
@@ -229,13 +198,5 @@ class routerConfigue {
         );
       },
     ),
-
-    // GoRoute(
-    //   path: routerConst.hiddenDrawer,
-    //   name: routerConst.hiddenDrawer,
-    //   builder: (context, state) {
-    //     return const HiddenDrawerMenuView();
-    //   },
-    // ),
   ]);
 }

@@ -6,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:http/http.dart' as http;
 import 'package:tima_app/DataBase/dataHub/secureStorageService.dart';
 import 'package:tima_app/DataBase/keys/keys.dart';
-import 'package:tima_app/core/GWidgets/btnText.dart';
 import 'package:tima_app/core/constants/apiUrlConst.dart';
 import 'package:tima_app/core/constants/colorConst.dart';
+import 'package:tima_app/feature/LogOut/logout.dart';
 import 'package:tima_app/feature/home/screen/home.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
@@ -170,7 +169,7 @@ abstract class HomeBuilder extends State<Home> {
               ),
             ),
             ListTile(
-              onTap: () => context.pushNamed(routerConst.register, extra: '0'),
+              onTap: () => context.pushNamed(routerConst.register),
               leading: const Icon(Icons.person),
               title: const Text(
                 "Registration",
@@ -223,60 +222,12 @@ abstract class HomeBuilder extends State<Home> {
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
               ),
               onTap: () {
-                showAdaptiveDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog.adaptive(
-                        title: lebelText(
-                            labelText: 'LogOut', size: 17, color: blueColor),
-                        content: lebelText(
-                            labelText: 'Do you want to logout to TimaApp',
-                            size: 15,
-                            color: Colors.black),
-                        actions: [
-                          // * logout action done button
-                          ElevatedButton(
-                              onPressed: () {
-                                secureStorage.write(
-                                    key: StorageKeys.loginKey,
-                                    value: false.toString());
-                                // SystemNavigator.pop();
-                                GoRouter.of(context)
-                                    .goNamed(routerConst.loginScreen);
-
-                                ModalRoute.withName(routerConst.loginScreen);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  backgroundColor: Colors.red),
-                              child: Text(
-                                'Yes',
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              )),
-
-                          // * logout action cencel button
-                          ElevatedButton(
-                              onPressed: () {
-                                GoRouter.of(context).pop();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  backgroundColor: Colors.green),
-                              child: Text(
-                                'No',
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ))
-                        ],
-                      );
-                    });
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomDialog();
+                  },
+                );
               },
             ),
             const SizedBox(
@@ -344,4 +295,6 @@ abstract class HomeBuilder extends State<Home> {
       ],
     );
   }
+
+  // * show logout dailoge feature box
 }

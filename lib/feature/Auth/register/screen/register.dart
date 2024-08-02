@@ -24,8 +24,7 @@ import 'package:tima_app/providers/LocationProvider/location_provider.dart';
 import 'package:tima_app/router/routes/routerConst.dart';
 
 class RegisterScreen extends StatefulWidget {
-  var inquryID;
-  RegisterScreen({super.key, this.inquryID});
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -516,7 +515,7 @@ class _RegisterScreenState extends RegisterController {
                   ),
                   Center(
                       child: txtHelper()
-                          .heading1Text('REGISTERATION', 23, blueColor)),
+                          .heading1Text('REGISTERATION', 21, blueColor)),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -591,13 +590,10 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: nameController,
                       validator: (value) {
@@ -606,12 +602,12 @@ class _RegisterScreenState extends RegisterController {
                         }
                         return null; //changes
                       },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(CupertinoIcons.building_2_fill),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(CupertinoIcons.building_2_fill),
                         hintText: "Organization Name",
-                        border: InputBorder.none,
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                       ),
                       onChanged: (text) {
                         setState(() {
@@ -643,13 +639,10 @@ class _RegisterScreenState extends RegisterController {
                   ),
 
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: emailController,
                       validator: (value) {
@@ -664,13 +657,13 @@ class _RegisterScreenState extends RegisterController {
                         }
                         return null; //changes;
                       },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.email),
                         counterText: "",
                         hintText: "Email *",
-                        border: InputBorder.none,
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                       ),
                       onChanged: (text) {
                         setState(() {
@@ -700,13 +693,10 @@ class _RegisterScreenState extends RegisterController {
                   ),
 
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: mobileController,
                       validator: (value) {
@@ -718,17 +708,17 @@ class _RegisterScreenState extends RegisterController {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.phone),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.phone),
                         counterText: "",
                         hintText: "Mobile Number *",
-                        border: InputBorder.none,
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                       ),
                       onChanged: (text) {
                         setState(() {
-                          if (text.length > 0) {
+                          if (text.isNotEmpty) {
                             errormobile = true;
                           }
                         });
@@ -755,11 +745,10 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
-                    // height: 55.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: DropdownButtonFormField(
                       validator: (value) {
                         if (value == null || value == '') {
@@ -767,12 +756,12 @@ class _RegisterScreenState extends RegisterController {
                         }
                         return null; //changes
                       },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                      decoration: InputDecoration(
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                         filled: true,
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         hintText: "Select State",
 
                         fillColor: tfColor,
@@ -820,11 +809,10 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
-                    // height: 55.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: DropdownButtonFormField(
                       validator: (value) {
                         if (value == null || value == '') {
@@ -833,10 +821,10 @@ class _RegisterScreenState extends RegisterController {
                         return null; //changes
                       },
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        border: boarder,
 
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                         filled: true,
                         hintStyle: const TextStyle(color: Colors.grey),
                         hintText: "Select City",
@@ -881,23 +869,20 @@ class _RegisterScreenState extends RegisterController {
                   ),
 
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: pinController,
                       // validator: form_validation().validatepincode,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.pin),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.pin),
                         counterText: "",
                         hintText: "Pin",
-                        border: InputBorder.none,
-                        // focusedBorder: focusboarder,
-                        // errorBorder: errorboarder,
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                       ),
                       maxLength: 10,
                       keyboardType: TextInputType.number,
@@ -921,20 +906,17 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: webController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.web),
                         counterText: "",
                         hintText: "Web",
-                        border: InputBorder.none,
+                        border: boarder,
                         focusedBorder: focusboarder,
                         errorBorder: errorboarder,
                       ),
@@ -960,6 +942,7 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
+                    alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
                     width: size.width,
@@ -1018,6 +1001,7 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
+                    alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
                     width: size.width,
@@ -1078,26 +1062,25 @@ class _RegisterScreenState extends RegisterController {
                   ),
 
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    alignment: Alignment.centerLeft,
-                    // height: 50.h,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       controller: locationController,
                       readOnly: true,
 
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_city),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.location_city),
                         counterText: "",
                         hintText: "Location *",
-                        border: InputBorder.none,
+                        border: boarder,
+                        focusedBorder: focusboarder,
+                        errorBorder: errorboarder,
                       ),
                       onChanged: (text) {
                         setState(() {
-                          if (text.length > 0) {
+                          if (text.isNotEmpty) {
                             erroelocation = true;
                           }
                         });
@@ -1144,38 +1127,37 @@ class _RegisterScreenState extends RegisterController {
                     height: 10.h,
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
                     alignment: Alignment.centerLeft,
-                    height: 70,
-                    width: size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         color: tfColor),
+                    width: size.width,
                     child: TextFormField(
                       readOnly: true,
                       controller: addressController,
+                      maxLength: 3,
                       validator: (value) {
                         if (value == null || value == '') {
                           return 'Please Enter a Valid Name';
                         }
                         return null; //changes
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         prefixIcon: Icon(Icons.home),
                         counterText: "",
                         hintText: "Address *",
-                        border: InputBorder.none,
+                        border: boarder,
                       ),
                       onChanged: (text) {
                         setState(() {
-                          if (text.length > 0) {
+                          if (text.isNotEmpty) {
                             erroradd = true;
                           }
                         });
                       },
                       maxLines: 3,
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
@@ -1229,7 +1211,9 @@ class _RegisterScreenState extends RegisterController {
                           letterSpacing: 0.2,
                         ),
                         decoration: const InputDecoration(
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
                           hintText: "Contact Person",
                           hintStyle: TextStyle(
                             color: Colors.grey,
@@ -1301,12 +1285,12 @@ class _RegisterScreenState extends RegisterController {
                             fontWeight: FontWeight.w300,
                             letterSpacing: 1.2,
                           ),
-                          // errorBorder: OutlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.red),
-                          // ),
-                          // focusedErrorBorder: OutlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.grey),
-                          // ),
+                          errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
                         ),
                         controller: endcontroller,
                         validator: ((value) {
@@ -1348,12 +1332,12 @@ class _RegisterScreenState extends RegisterController {
                               fontWeight: FontWeight.w300,
                               letterSpacing: 1.2,
                             ),
-                            // errorBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.red),
-                            // ),
-                            // focusedErrorBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.grey),
-                            // ),
+                            errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
                           ),
                           controller: emailcontroller,
                           validator: (value) {
@@ -1399,12 +1383,11 @@ class _RegisterScreenState extends RegisterController {
                         onPressed: () async {
                           ref.updateMap();
                           bool validemail;
-                          print("-------" + AllServices.toString());
+                          log("--->$AllServices");
 
                           try {
                             if (registerkey.currentState!.validate()) {
-                              print(
-                                  "--1-----" + AllLanguageServices.toString());
+                              log("--1--->$AllLanguageServices");
                               // if(validemail==true){
                               //
                               // }else{
@@ -1453,7 +1436,7 @@ class _RegisterScreenState extends RegisterController {
                                 "mobile": mobileController.text,
                                 "web": webController.text,
                                 "email": emailController.text,
-                                "inq_id": widget.inquryID,
+                                "inq_id": '0',
                                 "location": "${ref.lat.value},${ref.lng.value}",
                                 'products':
                                     '${AllLanguageServices.length == 0 ? "" : jsonEncode(AllLanguageServices)}',
@@ -1464,20 +1447,16 @@ class _RegisterScreenState extends RegisterController {
                                     '${jsonEncode(arrayListmobile)}',
                                 'contact_email': '${jsonEncode(arrayListmail)}'
                               });
-                              print("boss-----" +
-                                  jsonEncode(arrayList1).toString());
-                              print("boss-----" +
-                                  jsonEncode(arrayListmail).toString());
-                              print("boss-----" +
-                                  jsonEncode(arrayListmobile).toString());
-                              print("client registration " + body.toString());
+                              log("boss==> $jsonEncode(arrayList1)");
+                              log("boss==> $jsonEncode(arrayListmail)");
+                              log("boss==> $jsonEncode(arrayListmobile)");
+                              log("client registration==> $body");
                               var result =
                                   await ApiBaseHelper().postAPICall(url, body);
                               if (result.statusCode == 200) {
                                 var responsedata = jsonDecode(result.body);
 
-                                print("client registration " +
-                                    result.body.toString());
+                                log("client registration==>${result.body} ");
                                 Fluttertoast.showToast(
                                     msg: responsedata['message']);
                                 nameController.clear();
@@ -1497,16 +1476,17 @@ class _RegisterScreenState extends RegisterController {
                                 fields.clear();
                                 GoRouter.of(context)
                                     .goNamed(routerConst.homeNavBar);
+                                GoRouter.of(context).pop();
                               }
                               // Registration();
                               // if(registerkey.currentState.validate()){
                               //
                               // }
                             } else {
-                              print("ok not");
+                              log("ok not");
                             }
                           } catch (e) {
-                            print("exception : " + e.toString());
+                            log("exception :=> $e ");
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -1522,117 +1502,8 @@ class _RegisterScreenState extends RegisterController {
                               color: Colors.white),
                         )),
                   ),
-                  // appButton(
-                  //     onPressed: () async {
-                  //       var url;
-                  //       ref.updateMap();
-                  //       // bool validemail;
-                  //       log("AllServices--> $AllServices");
-
-                  //       try {
-                  //         if (registerkey.currentState!.validate()) {
-                  //           log("AllLanguageServices--> $AllLanguageServices");
-
-                  //           startController
-                  //               .where((element) => element.text != "")
-                  //               .fold("", (previousValue, element) {
-                  //             arrayList1.add(element.text);
-                  //             return '';
-                  //           });
-                  //           emailcontrollers
-                  //               .where((element) => element.text != "")
-                  //               .fold("", (previousValue, element) {
-                  //             arrayListmail.add(element.text);
-                  //             return '';
-                  //           });
-                  //           endController
-                  //               .where((element) => element.text != "")
-                  //               .fold("", (previousValue, element) {
-                  //             arrayListmobile.add(element.text);
-                  //             return '';
-                  //           });
-                  //           if (selectedRadioTile == 1) {
-                  //             url = Uri.parse(client_reg_url);
-                  //           } else {
-                  //             url = Uri.parse(vender_reg_url);
-                  //           }
-                  //           String? companyID =
-                  //               await _secureStorageService.getUserCompanyID(
-                  //                   key: StorageKeys.companyIdKey);
-
-                  //           String? userID = await _secureStorageService
-                  //               .getUserID(key: StorageKeys.userIDKey);
-                  //           var body = jsonEncode({
-                  //             "company_id": companyID,
-                  //             'user_id': userID,
-                  //             "org_name": nameController.text,
-                  //             "address": addressController.text,
-                  //             "city": selectCityID,
-                  //             "pin": pinController.text,
-                  //             "state": selectedstateId,
-                  //             "contact_no": "8852911910",
-                  //             "mobile": mobileController.text,
-                  //             "web": webController.text,
-                  //             "email": emailController.text,
-                  //             "inq_id": widget.inquryID,
-                  //             "location": "${ref.lat.value},${ref.lng.value}",
-                  //             'products': AllLanguageServices.isEmpty
-                  //                 ? ""
-                  //                 : jsonEncode(AllLanguageServices),
-                  //             'services':
-                  //                 '${AllServices.length == 0 ? "" : jsonEncode(AllServices)}',
-                  //             'contact_person': jsonEncode(arrayList1),
-                  //             'contact_mobile': jsonEncode(arrayListmobile),
-                  //             'contact_email': jsonEncode(arrayListmail)
-                  //           });
-                  //           log("boss--> ${jsonEncode(arrayList1)}");
-                  //           log("boss--> ${jsonEncode(arrayListmail)}");
-                  //           log("boss-->${jsonEncode(arrayListmobile)}");
-                  //           log("client registration=> $body");
-                  //           var result =
-                  //               await ApiBaseHelper().postAPICall(url, body);
-                  //           if (result.statusCode == 200) {
-                  //             var responsedata = jsonDecode(result.body);
-
-                  //             log("client registration => ${result.body}");
-                  //             Fluttertoast.showToast(
-                  //                 msg: responsedata['message']);
-                  //             // nameController.clear();
-                  //             // emailController.clear();
-                  //             // mobileController.clear();
-                  //             // pinController.clear();
-                  //             // webController.clear();
-                  //             // addressController.clear();
-                  //             // startController.clear();
-                  //             // endController.clear();
-                  //             // emailcontrollers.clear();
-                  //             // fields1.clear();
-                  //             // fields2.clear();
-                  //             // fields3.clear();
-                  //             // timefields1.clear();
-                  //             // timefields2.clear();
-                  //             // fields.clear();
-                  //             GoRouter.of(context)
-                  //                 .pushNamed(routerConst.homeNavBar);
-                  //           }
-
-                  //           // Registration();
-                  //           // if(registerkey.currentState.validate()){
-                  //           //
-                  //           // }
-                  //         } else {
-                  //           log("ok not");
-                  //         }
-                  //       } catch (e) {
-                  //         log("exception : $e");
-                  //       }
-                  //     },
-                  //     text: 'Submit',
-                  //     height: 50,
-                  //     width: double.infinity),
-                  //     child:  CustomRichText(text: "Already Have An Account ?",text2: "Login",)),
                   SizedBox(
-                    height: 15,
+                    height: 15.h,
                   ),
                 ],
               ),
